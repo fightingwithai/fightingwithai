@@ -3,6 +3,7 @@ import '../styles/design-system.css';
 import '../styles/theme-dark.css';
 import '../styles/theme-light.css';
 import { getCollection } from "astro:content";
+import { sortCollectionByDependency } from '../utils/sortByDependency';
 
 interface Props {
   title: string;
@@ -14,12 +15,12 @@ const { title, description = "Fighting With AI - Patterns of AI Coding" } = Astr
 const tagline = "Patterns of AI Coding. From Vibes to Engineering.";
 
 // Fetch all content collections for navigation
-const concepts = await getCollection("concepts");
+const conceptsRaw = await getCollection("concepts");
 const failureModes = await getCollection("failure-modes");
 const patterns = await getCollection("patterns");
 
-// Sort alphabetically by title
-concepts.sort((a, b) => a.data.title.localeCompare(b.data.title));
+// Sort concepts by dependency chain, others alphabetically
+const concepts = sortCollectionByDependency(conceptsRaw);
 failureModes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---

@@ -6,6 +6,7 @@ const concepts = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    dependsOn: z.string().optional(), // slug of prerequisite content
   }),
 });
 
@@ -15,6 +16,7 @@ const failureModes = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    relatesTo: z.array(z.string()).optional(), // slugs of related content
   }),
 });
 
@@ -23,6 +25,7 @@ const patterns = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    relatesTo: z.array(z.string()).optional(), // slugs of related content
   }),
 });
 
