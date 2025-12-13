@@ -9,9 +9,10 @@ The AI gets stuck in a loop, flip-flopping between wrong answers or digging deep
 
 ## Symptoms
 
-- AI flip-flops on diagnoses ("the issue is X... wait, it's Y... no, it's actually Y again")
+- AI flip-flops on diagnoses ("the issue is X... wait, it's Y... no, it's actually X again")
 - Spiraling deeper into wrong directions
 - Amplifying its own previous noise instead of course-correcting
+- Spawns multiple processes (frontend, backend, tests), loses track, tries to kill them, spawns duplicates, repeats
 
 ## Theory
 

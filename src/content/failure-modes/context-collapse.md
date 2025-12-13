@@ -11,6 +11,8 @@ When the AI lacks the information it needs to do the job. It's working blind, so
 
 **Missing context.** The AI doesn't have information it needs. You're asking about a bug, but it hasn't seen the error message. You want changes to a file it hasn't read.
 
+**Lost runtime state.** The AI spawns processes but doesn't track them. It forgets what's running, which ports are bound, which PIDs to kill.
+
 **Drowned context.** Noise buries the signal. After enough retries, guesses, and failed attempts, the original goal gets pushed out of effective attention.
 
 ## Symptoms
