@@ -1,0 +1,173 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Fighting With AI - Patterns for AI-assisted software engineering" } = Astro.props;
+
+const tagline = "Patterns for AI Coding";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <style is:global>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #0a0a0a;
+        color: #e5e5e5;
+        min-height: 100vh;
+        padding: 2rem 1rem 4rem;
+        line-height: 1.7;
+      }
+
+      a {
+        color: #a78bfa;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .site-header {
+        text-align: center;
+        padding: 1rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .site-header h1 {
+        font-size: clamp(2.5rem, 10vw, 5rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #fff 0%, #a3a3a3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .site-header a {
+        color: inherit;
+        text-decoration: none;
+        -webkit-text-fill-color: inherit;
+      }
+
+      .site-header a:hover {
+        text-decoration: none;
+      }
+
+      .tagline {
+        font-size: 1.25rem;
+        color: #737373;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+            .glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      article {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      article h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #fff 0%, #a3a3a3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      article h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        color: #e5e5e5;
+      }
+
+      article p {
+        margin-bottom: 1rem;
+        color: #a3a3a3;
+      }
+
+      article ul, article ol {
+        margin: 1rem 0 1.5rem 1.5rem;
+        color: #a3a3a3;
+      }
+
+      article li {
+        margin-bottom: 0.5rem;
+      }
+
+      article code {
+        background: #1a1a1a;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+
+      article pre {
+        background: #1a1a1a;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      article pre code {
+        background: none;
+        padding: 0;
+      }
+
+      article blockquote {
+        border-left: 3px solid #a78bfa;
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        color: #737373;
+        font-style: italic;
+      }
+
+      .placeholder-notice {
+        background: #1a1a1a;
+        border: 1px dashed #525252;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        color: #737373;
+        margin: 2rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <header class="site-header">
+      <h1><a href="/">Fighting With AI</a></h1>
+      <p class="tagline">{tagline}</p>
+    </header>
+    <slot />
+  </body>
+</html>
