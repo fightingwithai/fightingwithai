@@ -208,6 +208,31 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
         font-style: italic;
       }
 
+      /* Article images - bounded and floated on desktop */
+      article img {
+        max-width: 200px;
+        height: auto;
+        border-radius: var(--radius-lg);
+        border: 2px solid var(--color-border);
+      }
+
+      article .image-float {
+        float: right;
+        margin: 0 0 var(--space-4) var(--space-6);
+      }
+
+      @media (max-width: 768px) {
+        article .image-float {
+          float: none;
+          display: block;
+          margin: var(--space-4) auto;
+        }
+
+        article img {
+          max-width: 160px;
+        }
+      }
+
       .placeholder-notice {
         background-color: var(--color-surface);
         border: 1px dashed var(--color-border);
