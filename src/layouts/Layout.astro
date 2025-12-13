@@ -23,7 +23,7 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     <title>{title}</title>
     <style is:global>
@@ -324,6 +324,7 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
           transform: translateX(-100%);
           transition: transform var(--transition-slow);
           z-index: var(--z-overlay);
+          padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
         }
 
         .sidebar.open {
