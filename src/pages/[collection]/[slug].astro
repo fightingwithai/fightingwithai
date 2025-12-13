@@ -1,6 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import ContentNav from "../../components/ContentNav.astro";
+import RelatedContent from "../../components/RelatedContent.astro";
 import { getCollection } from "astro:content";
+import { sortCollectionByDependency } from "../../utils/sortByDependency";
 
 const collectionNames = ["concepts", "failure-modes", "patterns"] as const;
 
@@ -12,7 +16,7 @@ export async function getStaticPaths() {
     for (const entry of entries) {
       paths.push({
         params: { collection: collectionName, slug: entry.slug },
-        props: { entry },
+        props: { entry, collectionName },
       });
     }
   }
@@ -20,13 +24,121 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { entry } = Astro.props;
+const { entry, collectionName } = Astro.props;
 const { Content } = await entry.render();
 const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
+
+// Build a unified navigation list across all sections (same order as sidebar)
+const conceptsRaw = await getCollection("concepts");
+const failureModesRaw = await getCollection("failure-modes");
+const patternsRaw = await getCollection("patterns");
+
+// Sort each collection the same way as the sidebar
+const concepts = sortCollectionByDependency(conceptsRaw);
+const failureModes = [...failureModesRaw].sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+const patterns = [...patternsRaw].sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+
+// Collection display names (used for nav and mobile header)
+const collectionDisplayNames: Record<string, string> = {
+  'concepts': 'Concepts',
+  'failure-modes': 'Failure Modes',
+  'patterns': 'Patterns'
+};
+
+// Extract first paragraph from markdown body as description
+function extractDescription(body: string): string | undefined {
+  if (!body || body.trim().toLowerCase() === 'todo') return undefined;
+  // Find first non-empty paragraph (skip headers, blank lines)
+  const lines = body.split('\n');
+  let paragraph = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    // Skip empty lines, headers, and frontmatter markers
+    if (!trimmed || trimmed.startsWith('#') || trimmed === '---') continue;
+    // Found a content line
+    paragraph = trimmed;
+    break;
+  }
+  // Truncate to ~100 chars for preview
+  if (paragraph.length > 120) {
+    return paragraph.slice(0, 117) + '...';
+  }
+  return paragraph || undefined;
+}
+
+// Create unified navigation list with collection info, section names, and descriptions
+type NavEntry = {
+  slug: string;
+  title: string;
+  collection: string;
+  sectionName: string;
+  description?: string;
+};
+
+const allContent: NavEntry[] = [
+  ...concepts.map(e => ({
+    slug: e.slug,
+    title: e.data.title,
+    collection: "concepts",
+    sectionName: collectionDisplayNames["concepts"],
+    description: extractDescription(e.body),
+  })),
+  ...failureModes.map(e => ({
+    slug: e.slug,
+    title: e.data.title,
+    collection: "failure-modes",
+    sectionName: collectionDisplayNames["failure-modes"],
+    description: extractDescription(e.body),
+  })),
+  ...patterns.map(e => ({
+    slug: e.slug,
+    title: e.data.title,
+    collection: "patterns",
+    sectionName: collectionDisplayNames["patterns"],
+    description: extractDescription(e.body),
+  })),
+];
+
+// Find current position in the unified list
+const currentIndex = allContent.findIndex(
+  (e) => e.slug === entry.slug && e.collection === collectionName
+);
+
+// Calculate prev/next across all sections
+const prev = currentIndex > 0 ? allContent[currentIndex - 1] : null;
+const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
+
+// Resolve related content (relatesTo slugs -> actual entries)
+const relatedSlugs = entry.data.relatesTo || [];
+const relatedItems = [];
+
+for (const slug of relatedSlugs) {
+  // relatesTo can reference any collection, so search all
+  for (const searchCollection of collectionNames) {
+    const allInCollection = await getCollection(searchCollection);
+    const found = allInCollection.find((e) => e.slug === slug);
+    if (found) {
+      relatedItems.push({
+        slug: found.slug,
+        title: found.data.title,
+        collection: searchCollection,
+      });
+      break;
+    }
+  }
+}
+
+const currentSection = collectionDisplayNames[collectionName];
 ---
 
-<Layout title={entry.data.title}>
+<Layout title={entry.data.title} currentSection={currentSection} currentSectionSlug={collectionName} pageTitle={entry.data.title}>
   <article>
+    <Breadcrumbs collection={collectionName} title={entry.data.title} />
+
     <h1>{entry.data.title}</h1>
 
     {isPlaceholder ? (
@@ -36,5 +148,8 @@ const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
     ) : (
       <Content />
     )}
+
+    <RelatedContent items={relatedItems} />
+    <ContentNav prev={prev} next={next} currentCollection={collectionName} />
   </article>
 </Layout>

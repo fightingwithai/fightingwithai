@@ -8,9 +8,12 @@ import { sortCollectionByDependency } from '../utils/sortByDependency';
 interface Props {
   title: string;
   description?: string;
+  currentSection?: string;
+  currentSectionSlug?: string; // URL slug for the section (e.g., "concepts", "failure-modes")
+  pageTitle?: string; // The actual page title for breadcrumbs (distinct from <title>)
 }
 
-const { title, description = "Fighting With AI - Patterns of AI Coding" } = Astro.props;
+const { title, description = "Fighting With AI - Patterns of AI Coding", currentSection, currentSectionSlug, pageTitle } = Astro.props;
 
 const tagline = "Patterns of AI Coding. From Vibes to Engineering.";
 
@@ -265,6 +268,42 @@ patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
           color: var(--color-text);
         }
 
+        .mobile-breadcrumbs {
+          display: flex;
+          align-items: center;
+          gap: var(--space-2);
+          font-size: var(--text-sm);
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .mobile-breadcrumbs a {
+          color: var(--color-text-muted);
+          text-decoration: none;
+          white-space: nowrap;
+        }
+
+        .mobile-breadcrumbs a:hover {
+          color: var(--color-accent);
+        }
+
+        .mobile-breadcrumbs .separator {
+          color: var(--color-border);
+          flex-shrink: 0;
+        }
+
+        .mobile-breadcrumbs .current {
+          color: var(--color-text);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .mobile-home-icon {
+          font-size: var(--text-base);
+        }
+
         .sidebar {
           transform: translateX(-100%);
           transition: transform var(--transition-slow);
@@ -346,7 +385,27 @@ patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
     <header class="mobile-header">
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
-      <span class="mobile-header-title">Fighting With AI</span>
+      {currentSection && pageTitle ? (
+        <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
+          <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
+          <span class="separator">→</span>
+          {currentSectionSlug ? (
+            <a href={`/${currentSectionSlug}/`}>{currentSection}</a>
+          ) : (
+            <span>{currentSection}</span>
+          )}
+          <span class="separator">→</span>
+          <span class="current">{pageTitle}</span>
+        </nav>
+      ) : currentSection ? (
+        <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
+          <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
+          <span class="separator">→</span>
+          <span class="current">{currentSection}</span>
+        </nav>
+      ) : (
+        <span class="mobile-header-title">Fighting With AI</span>
+      )}
     </header>
 
     <div class="sidebar-overlay" id="sidebar-overlay"></div>

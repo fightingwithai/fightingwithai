@@ -1,0 +1,63 @@
+---
+interface NavItem {
+  slug: string;
+  title: string;
+  collection: string;
+  sectionName: string;
+  description?: string;
+}
+
+interface Props {
+  prev: NavItem | null;
+  next: NavItem | null;
+  currentCollection: string;
+}
+
+const { prev, next, currentCollection } = Astro.props;
+
+// Check if navigating to a different section
+const crossingToNewSection = next && next.collection !== currentCollection;
+---
+
+{next && (
+  <nav class="content-nav" aria-label="Page navigation">
+    <a href={`/${next.collection}/${next.slug}/`} class="nav-next">
+      {crossingToNewSection && <span class="section-label">{next.sectionName}</span>}
+      <span class="nav-title">{next.title} →</span>
+    </a>
+  </nav>
+)}
+
+<style>
+  .content-nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--space-4) 0;
+    margin: var(--space-6) 0;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+
+  .nav-next {
+    color: var(--color-accent);
+    text-decoration: none;
+    text-align: right;
+  }
+
+  .nav-next:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .section-label {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-1);
+  }
+
+  .nav-title {
+    display: block;
+  }
+</style>
