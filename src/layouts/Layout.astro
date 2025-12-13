@@ -2,8 +2,8 @@
 import '../styles/design-system.css';
 import '../styles/theme-dark.css';
 import '../styles/theme-light.css';
-import { getCollection } from "astro:content";
-import { sortCollectionByDependency } from '../utils/sortByDependency';
+import { getAllCollectionsSorted } from '../utils/collections';
+import MobileBreadcrumbs from '../components/MobileBreadcrumbs.astro';
 
 interface Props {
   title: string;
@@ -15,17 +15,8 @@ interface Props {
 
 const { title, description = "Fighting With AI - Patterns of AI Coding", currentSection, currentSectionSlug, pageTitle } = Astro.props;
 
-const tagline = "Patterns of AI Coding. From Vibes to Engineering.";
-
-// Fetch all content collections for navigation
-const conceptsRaw = await getCollection("concepts");
-const failureModes = await getCollection("failure-modes");
-const patterns = await getCollection("patterns");
-
-// Sort concepts by dependency chain, others alphabetically
-const concepts = sortCollectionByDependency(conceptsRaw);
-failureModes.sort((a, b) => a.data.title.localeCompare(b.data.title));
-patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
+// Fetch all collections (sorted according to their config) for sidebar navigation
+const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
 ---
 
 <!doctype html>
@@ -385,27 +376,11 @@ patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
     <header class="mobile-header">
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
-      {currentSection && pageTitle ? (
-        <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
-          <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
-          <span class="separator">→</span>
-          {currentSectionSlug ? (
-            <a href={`/${currentSectionSlug}/`}>{currentSection}</a>
-          ) : (
-            <span>{currentSection}</span>
-          )}
-          <span class="separator">→</span>
-          <span class="current">{pageTitle}</span>
-        </nav>
-      ) : currentSection ? (
-        <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
-          <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
-          <span class="separator">→</span>
-          <span class="current">{currentSection}</span>
-        </nav>
-      ) : (
-        <span class="mobile-header-title">Fighting With AI</span>
-      )}
+      <MobileBreadcrumbs
+        currentSection={currentSection}
+        currentSectionSlug={currentSectionSlug}
+        pageTitle={pageTitle}
+      />
     </header>
 
     <div class="sidebar-overlay" id="sidebar-overlay"></div>

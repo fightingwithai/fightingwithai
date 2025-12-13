@@ -1,0 +1,43 @@
+---
+/**
+ * MobileBreadcrumbs - Renders breadcrumb navigation for the mobile header
+ *
+ * Handles three states:
+ * 1. Full path: Home → Section → Page (when both section and pageTitle provided)
+ * 2. Section only: Home → Section (when only section provided)
+ * 3. Site title: Just "Fighting With AI" (when no section)
+ */
+interface Props {
+  currentSection?: string;
+  currentSectionSlug?: string;
+  pageTitle?: string;
+}
+
+const { currentSection, currentSectionSlug, pageTitle } = Astro.props;
+
+// Determine which breadcrumb variant to render
+const hasFullPath = currentSection && pageTitle;
+const hasSectionOnly = currentSection && !pageTitle;
+---
+
+{hasFullPath ? (
+  <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
+    <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
+    <span class="separator">→</span>
+    {currentSectionSlug ? (
+      <a href={`/${currentSectionSlug}/`}>{currentSection}</a>
+    ) : (
+      <span>{currentSection}</span>
+    )}
+    <span class="separator">→</span>
+    <span class="current">{pageTitle}</span>
+  </nav>
+) : hasSectionOnly ? (
+  <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
+    <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
+    <span class="separator">→</span>
+    <span class="current">{currentSection}</span>
+  </nav>
+) : (
+  <span class="mobile-header-title">Fighting With AI</span>
+)}

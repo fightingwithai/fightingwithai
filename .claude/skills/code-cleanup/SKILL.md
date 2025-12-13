@@ -26,6 +26,9 @@ After iterating on code with multiple changes, reversals, or simplifications - t
    | **Inconsistent patterns** | Same thing done different ways | `flex` vs `text-align` for alignment |
    | **Over-abstraction** | Complexity added then never used | Interface with 5 fields, 2 used |
    | **Under-abstraction** | Copy-paste that should be shared | 3 nearly-identical page templates |
+   | **Nested ternaries** | Complex conditional rendering inline | 20-line ternary in layout template |
+   | **Hardcoded variants** | Multiple files differing only in config values | 3 index pages with different titles |
+   | **Repeated inline logic** | Same operation duplicated across files | `.sort((a, b) => ...)` in 5 places |
 
 3. **Prioritize by impact:**
    - **High**: Dead code, unused props (easy wins, remove confusion)
@@ -51,6 +54,91 @@ This ensures you can always get back to working code if cleanup introduces issue
 After each logical chunk, verify the app still works.
 
 ## Common Cleanup Patterns
+
+### Extracting Nested Ternaries
+
+Nested ternaries in Astro/JSX are hard to read and modify. Extract to components when you see:
+- Multiple conditions determining what to render
+- Same HTML structure repeated with slight variations
+- Logic mixing with markup in confusing ways
+
+```astro
+<!-- Before: nested ternary spanning 20+ lines -->
+{conditionA && conditionB ? (
+  <nav>
+    {subCondition ? <a href="/">{x}</a> : <span>{x}</span>}
+    <span>{y}</span>
+  </nav>
+) : conditionA ? (
+  <nav>
+    <span>{x}</span>
+  </nav>
+) : (
+  <span>Fallback</span>
+)}
+
+<!-- After: clean component usage -->
+<MyBreadcrumbs
+  sectionName={sectionName}
+  sectionSlug={sectionSlug}
+  pageTitle={pageTitle}
+/>
+```
+
+The component encapsulates the logic with clear variable names at the top:
+```astro
+---
+const hasFullPath = currentSection && pageTitle;
+const hasSectionOnly = currentSection && !pageTitle;
+---
+{hasFullPath ? (...) : hasSectionOnly ? (...) : (...)}
+```
+
+This moves complexity to one place and makes the parent template scannable.
+
+### Consolidating Hardcoded Variants
+
+When you see multiple files that are nearly identical with only small differences (title, description, sort method), consolidate into a single dynamic file with configuration.
+
+**Signs of this problem:**
+- 3+ files with same structure, different hardcoded values
+- Copy-paste when adding new variants
+- Changes need to be made in multiple places
+
+```astro
+<!-- Before: 3 separate files (concepts/index, patterns/index, failure-modes/index) -->
+<!-- Each 30+ lines, differing only in: collection name, title, description, sort method -->
+
+<!-- After: ONE dynamic [collection]/index.astro + config -->
+```
+
+**The fix pattern:**
+1. Create a config object with all variant-specific values
+2. Create one dynamic page that reads from config
+3. Delete the hardcoded files
+
+```typescript
+// src/utils/collections-config.ts
+export const COLLECTION_CONFIG = {
+  "concepts": { displayName: "Concepts", sortMethod: "dependency", description: "..." },
+  "failure-modes": { displayName: "Failure Modes", sortMethod: "alphabetical", description: "..." },
+  // ...
+};
+
+// src/pages/[collection]/index.astro
+const config = COLLECTION_CONFIG[collection];
+```
+
+### Separating Pure Functions from Framework Code
+
+When testing fails because of framework imports (`astro:content`, `next/router`, etc.), split into two files:
+
+```
+collections-config.ts  ← Pure TypeScript, testable
+collections.ts         ← Re-exports config + adds framework-specific functions
+```
+
+The test imports from the `-config` file, production code imports from the main file.
 
 ### Removing Dead Props
 

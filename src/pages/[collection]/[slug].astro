@@ -1,17 +1,25 @@
 ---
+/**
+ * Dynamic content page for all collections.
+ * Handles concepts, failure-modes, and patterns.
+ */
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ContentNav from "../../components/ContentNav.astro";
 import RelatedContent from "../../components/RelatedContent.astro";
 import { getCollection } from "astro:content";
-import { sortCollectionByDependency } from "../../utils/sortByDependency";
-
-const collectionNames = ["concepts", "failure-modes", "patterns"] as const;
+import {
+  COLLECTION_NAMES,
+  COLLECTION_CONFIG,
+  buildUnifiedNavList,
+  resolveRelatedContent,
+  type CollectionName,
+} from "../../utils/collections";
 
 export async function getStaticPaths() {
   const paths = [];
 
-  for (const collectionName of ["concepts", "failure-modes", "patterns"]) {
+  for (const collectionName of COLLECTION_NAMES) {
     const entries = await getCollection(collectionName);
     for (const entry of entries) {
       paths.push({
@@ -24,92 +32,32 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { entry, collectionName } = Astro.props;
+const { entry, collectionName } = Astro.props as {
+  entry: Awaited<ReturnType<typeof getCollection>>[number];
+  collectionName: CollectionName;
+};
+
 const { Content } = await entry.render();
 const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
 
-// Build a unified navigation list across all sections (same order as sidebar)
-const conceptsRaw = await getCollection("concepts");
-const failureModesRaw = await getCollection("failure-modes");
-const patternsRaw = await getCollection("patterns");
-
-// Sort each collection the same way as the sidebar
-const concepts = sortCollectionByDependency(conceptsRaw);
-const failureModes = [...failureModesRaw].sort((a, b) =>
-  a.data.title.localeCompare(b.data.title)
-);
-const patterns = [...patternsRaw].sort((a, b) =>
-  a.data.title.localeCompare(b.data.title)
-);
-
-// Collection display names (used for nav and mobile header)
-const collectionDisplayNames: Record<string, string> = {
-  'concepts': 'Concepts',
-  'failure-modes': 'Failure Modes',
-  'patterns': 'Patterns'
-};
-
-// Create unified navigation list with collection info and section names
-type NavEntry = {
-  slug: string;
-  title: string;
-  collection: string;
-  sectionName: string;
-};
-
-const allContent: NavEntry[] = [
-  ...concepts.map(e => ({
-    slug: e.slug,
-    title: e.data.title,
-    collection: "concepts",
-    sectionName: collectionDisplayNames["concepts"],
-  })),
-  ...failureModes.map(e => ({
-    slug: e.slug,
-    title: e.data.title,
-    collection: "failure-modes",
-    sectionName: collectionDisplayNames["failure-modes"],
-  })),
-  ...patterns.map(e => ({
-    slug: e.slug,
-    title: e.data.title,
-    collection: "patterns",
-    sectionName: collectionDisplayNames["patterns"],
-  })),
-];
-
-// Find current position in the unified list
+// Build navigation and resolve related content using helpers
+const allContent = await buildUnifiedNavList();
 const currentIndex = allContent.findIndex(
   (e) => e.slug === entry.slug && e.collection === collectionName
 );
-
-// Calculate next across all sections
 const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
 
-// Resolve related content (relatesTo slugs -> actual entries)
-const relatedSlugs = entry.data.relatesTo || [];
-const relatedItems = [];
+const relatedItems = await resolveRelatedContent(entry.data.relatesTo || []);
 
-for (const slug of relatedSlugs) {
-  // relatesTo can reference any collection, so search all
-  for (const searchCollection of collectionNames) {
-    const allInCollection = await getCollection(searchCollection);
-    const found = allInCollection.find((e) => e.slug === slug);
-    if (found) {
-      relatedItems.push({
-        slug: found.slug,
-        title: found.data.title,
-        collection: searchCollection,
-      });
-      break;
-    }
-  }
-}
-
-const currentSection = collectionDisplayNames[collectionName];
+const config = COLLECTION_CONFIG[collectionName];
 ---
 
-<Layout title={entry.data.title} currentSection={currentSection} currentSectionSlug={collectionName} pageTitle={entry.data.title}>
+<Layout
+  title={entry.data.title}
+  currentSection={config.displayName}
+  currentSectionSlug={collectionName}
+  pageTitle={entry.data.title}
+>
   <article>
     <Breadcrumbs collection={collectionName} title={entry.data.title} />
 

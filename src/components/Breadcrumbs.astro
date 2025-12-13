@@ -1,18 +1,13 @@
 ---
+import { getDisplayName, type CollectionName } from "../utils/collections";
+
 interface Props {
-  collection: string;
+  collection: CollectionName;
   title: string;
 }
 
 const { collection, title } = Astro.props;
-
-const collectionNames: Record<string, string> = {
-  'concepts': 'Concepts',
-  'failure-modes': 'Failure Modes',
-  'patterns': 'Patterns'
-};
-
-const displayName = collectionNames[collection] || collection;
+const displayName = getDisplayName(collection);
 ---
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
