@@ -20,7 +20,7 @@ const hasFullPath = currentSection && pageTitle;
 const hasSectionOnly = currentSection && !pageTitle;
 ---
 
-{hasFullPath ? (
+{hasFullPath && (
   <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
     <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
     <span class="separator">→</span>
@@ -32,12 +32,16 @@ const hasSectionOnly = currentSection && !pageTitle;
     <span class="separator">→</span>
     <span class="current">{pageTitle}</span>
   </nav>
-) : hasSectionOnly ? (
+)}
+
+{hasSectionOnly && (
   <nav class="mobile-breadcrumbs" aria-label="Breadcrumb">
     <a href="/" class="mobile-home-icon" aria-label="Home">⌂</a>
     <span class="separator">→</span>
     <span class="current">{currentSection}</span>
   </nav>
-) : (
+)}
+
+{!currentSection && (
   <span class="mobile-header-title">Fighting With AI</span>
 )}
