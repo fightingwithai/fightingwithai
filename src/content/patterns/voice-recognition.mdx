@@ -1,0 +1,37 @@
+---
+title: Voice Recognition
+---
+
+import { Image } from "astro:assets";
+import joshAvatar from "../../assets/josh-avatar.png";
+
+<div class="image-float">
+  <Image src={joshAvatar} alt="Josh using a Blue Yeti microphone" width={200} />
+</div>
+
+Talk to your AI instead of typing. It's faster.
+
+## The Quiet Revolution
+
+At startups, developers are buying dedicated microphones for their desks. Blue Yetis. Shure MV7s. Not for podcasting—for coding.
+
+Voice input is 3x faster than typing for most people. When you're pair programming with an AI all day, that adds up.
+
+## Skip the SaaS
+
+Most transcription services are just wrapping OpenAI's Whisper with a nice UI. Whisper is open source. The model is free.
+
+[Handy](https://handy.computer/) is a free, open-source speech-to-text app. It's a Rust wrapper around Whisper C++ and the Parakeet models. Everything runs locally.
+
+- **Free** — no subscription
+- **Private** — voice never leaves your machine
+- **Fast** — GPU-accelerated, near-instant
+
+Push a shortcut, talk, release. Text appears wherever your cursor is.
+
+## Getting Started
+
+1. Get a decent microphone. Laptop mics work, dedicated mics are clearer.
+2. Install [Handy](https://handy.computer/)
+3. Set a push-to-talk shortcut
+4. Practice. Feels weird at first. Give it a week.
