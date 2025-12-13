@@ -1,0 +1,55 @@
+---
+import { getDisplayName, type CollectionName } from "../utils/collections";
+
+interface Props {
+  collection: CollectionName;
+  title: string;
+}
+
+const { collection, title } = Astro.props;
+const displayName = getDisplayName(collection);
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="separator">→</span>
+  <a href={`/${collection}/`}>{displayName}</a>
+  <span class="separator">→</span>
+  <span class="current">{title}</span>
+</nav>
+
+<style>
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  /* Hide on mobile - breadcrumbs are shown in the mobile header instead */
+  @media (max-width: 768px) {
+    .breadcrumbs {
+      display: none;
+    }
+  }
+
+  .breadcrumbs a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+
+  .breadcrumbs a:hover {
+    color: var(--color-accent);
+  }
+
+  .separator {
+    color: var(--color-border);
+  }
+
+  .current {
+    color: var(--color-text);
+  }
+</style>

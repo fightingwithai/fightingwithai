@@ -17,6 +17,22 @@ import Layout from "../layouts/Layout.astro";
       line-height: var(--leading-relaxed);
       max-width: 600px;
     }
+
+    .home-nav {
+      text-align: right;
+      margin-top: var(--space-8);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+    }
+
+    .home-nav a {
+      color: var(--color-accent);
+    }
+
+    .home-nav a:hover {
+      color: var(--color-accent-hover);
+    }
   </style>
 
   <div class="home-intro">
@@ -26,5 +42,9 @@ import Layout from "../layouts/Layout.astro";
     <p class="lead">The industry is reacting instead of understanding: hype on one side, rejection on the other.</p>
     <p class="lead">This site is about neither.</p>
     <p class="lead">It's a living catalog of failure modes, symptoms, and patterns for working with AI without surrendering control — so we can stop arguing about whether AI "works" and start using it intentionally.</p>
+
+    <nav class="home-nav">
+      <a href="/concepts/">Concepts →</a>
+    </nav>
   </div>
 </Layout>

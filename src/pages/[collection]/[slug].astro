@@ -1,18 +1,30 @@
 ---
+/**
+ * Dynamic content page for all collections.
+ * Handles concepts, failure-modes, and patterns.
+ */
 import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import ContentNav from "../../components/ContentNav.astro";
+import RelatedContent from "../../components/RelatedContent.astro";
 import { getCollection } from "astro:content";
-
-const collectionNames = ["concepts", "failure-modes", "patterns"] as const;
+import {
+  COLLECTION_NAMES,
+  COLLECTION_CONFIG,
+  buildUnifiedNavList,
+  resolveRelatedContent,
+  type CollectionName,
+} from "../../utils/collections";
 
 export async function getStaticPaths() {
   const paths = [];
 
-  for (const collectionName of ["concepts", "failure-modes", "patterns"]) {
+  for (const collectionName of COLLECTION_NAMES) {
     const entries = await getCollection(collectionName);
     for (const entry of entries) {
       paths.push({
         params: { collection: collectionName, slug: entry.slug },
-        props: { entry },
+        props: { entry, collectionName },
       });
     }
   }
@@ -20,13 +32,35 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { entry } = Astro.props;
+const { entry, collectionName } = Astro.props as {
+  entry: Awaited<ReturnType<typeof getCollection>>[number];
+  collectionName: CollectionName;
+};
+
 const { Content } = await entry.render();
 const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
+
+// Build navigation and resolve related content using helpers
+const allContent = await buildUnifiedNavList();
+const currentIndex = allContent.findIndex(
+  (e) => e.slug === entry.slug && e.collection === collectionName
+);
+const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
+
+const relatedItems = await resolveRelatedContent(entry.data.relatesTo || []);
+
+const config = COLLECTION_CONFIG[collectionName];
 ---
 
-<Layout title={entry.data.title}>
+<Layout
+  title={entry.data.title}
+  currentSection={config.displayName}
+  currentSectionSlug={collectionName}
+  pageTitle={entry.data.title}
+>
   <article>
+    <Breadcrumbs collection={collectionName} title={entry.data.title} />
+
     <h1>{entry.data.title}</h1>
 
     {isPlaceholder ? (
@@ -36,5 +70,8 @@ const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
     ) : (
       <Content />
     )}
+
+    <RelatedContent items={relatedItems} />
+    <ContentNav next={next} currentCollection={collectionName} />
   </article>
 </Layout>

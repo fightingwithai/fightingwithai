@@ -1,0 +1,49 @@
+---
+/**
+ * Dynamic section index page.
+ * Replaces the three hardcoded pages: concepts/index, failure-modes/index, patterns/index
+ */
+import Layout from "../../layouts/Layout.astro";
+import {
+  COLLECTION_CONFIG,
+  COLLECTION_NAMES,
+  getCollectionSorted,
+  type CollectionName,
+} from "../../utils/collections";
+import "../../styles/section-index.css";
+
+export async function getStaticPaths() {
+  return COLLECTION_NAMES.map((collection) => ({
+    params: { collection },
+    props: { collection },
+  }));
+}
+
+const { collection } = Astro.props as { collection: CollectionName };
+const config = COLLECTION_CONFIG[collection];
+const entries = await getCollectionSorted(collection);
+const firstItem = entries[0];
+---
+
+<Layout title={config.displayName} currentSection={config.displayName}>
+  <article>
+    <h1>{config.displayName}</h1>
+    <p class="lead">{config.description}</p>
+
+    <ul class="section-list">
+      {entries.map((entry) => (
+        <li>
+          <a href={`/${collection}/${entry.slug}/`}>{entry.data.title}</a>
+        </li>
+      ))}
+    </ul>
+
+    {firstItem && (
+      <nav class="section-nav">
+        <a href={`/${collection}/${firstItem.slug}/`}>
+          {firstItem.data.title} →
+        </a>
+      </nav>
+    )}
+  </article>
+</Layout>
