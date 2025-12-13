@@ -26,14 +26,48 @@ const taglines = [
         color: #e5e5e5;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        overflow: hidden;
+        padding: 10vh 1rem 4rem;
+        overflow-x: hidden;
       }
 
       main {
         text-align: center;
         padding: 2rem;
+        max-width: 700px;
+      }
+
+      .intro {
+        margin-top: 4rem;
+        text-align: left;
+        color: #a3a3a3;
+        line-height: 1.7;
+        font-size: 1.1rem;
+      }
+
+      .intro p {
+        margin-bottom: 1.5rem;
+      }
+
+      .intro ul {
+        margin: 1rem 0 1.5rem 1.5rem;
+      }
+
+      .intro li {
+        margin-bottom: 0.5rem;
+      }
+
+      .intro strong {
+        color: #e5e5e5;
+      }
+
+      .intro .big-idea {
+        font-size: 1.2rem;
+        color: #e5e5e5;
+        text-align: center;
+        margin: 2rem 0;
+        font-weight: 500;
       }
 
       h1 {
@@ -127,6 +161,42 @@ const taglines = [
       <h1>Fighting With AI</h1>
       <div class="tagline-container">
         {taglines.map((line, i) => <span class="tagline" data-index={i}>{line}</span>)}
+      </div>
+
+      <div class="intro">
+        <p>Computers are getting really smart. They can write code, explain things, and help people build apps. But they also make mistakes, get confused, and sometimes sound confident even when they're wrong.</p>
+
+        <p>This book is about how people work with AI without letting it mess things up.</p>
+
+        <p>The title is "Fighting With AI", but it doesn't mean yelling at robots. It means:</p>
+        <ul>
+          <li>double-checking the AI</li>
+          <li>setting rules for it</li>
+          <li>knowing when to trust it and when not to</li>
+          <li>fixing its mistakes instead of blindly accepting them</li>
+        </ul>
+
+        <p>A lot of people say, "Just ask the AI and you're done."<br/>
+        This book says, <strong>"No — you still have to think."</strong></p>
+
+        <p>The book collects patterns, which are like:</p>
+        <ul>
+          <li>"When this problem shows up..."</li>
+          <li>"...this way of working usually helps."</li>
+        </ul>
+
+        <p>For example:</p>
+        <ul>
+          <li>If the AI gives confusing answers, you give it clearer rules.</li>
+          <li>If it keeps making the same mistake, you add tests so it can't.</li>
+          <li>If it starts guessing, you stop and reset instead of arguing forever.</li>
+        </ul>
+
+        <p class="big-idea">AI doesn't replace people.<br/>People who know how to work with AI do better.</p>
+
+        <p>So the book is like a guide for using AI responsibly, especially when building important things</p>
+
+        <p>It teaches how to stay in control, even when the tool is really powerful.</p>
       </div>
     </main>
     <script>
