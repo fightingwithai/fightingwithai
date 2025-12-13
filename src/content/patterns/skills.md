@@ -1,5 +1,5 @@
 ---
-title: Skills
+title: Skills / Tools / MCP
 ---
 
 todo

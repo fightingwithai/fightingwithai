@@ -1,5 +1,5 @@
 ---
-title: Commands
+title: Slash Commands / Prompts
 ---
 
 todo
