@@ -17,6 +17,22 @@ import Layout from "../layouts/Layout.astro";
       line-height: var(--leading-relaxed);
       max-width: 600px;
     }
+
+    .home-nav {
+      text-align: right;
+      margin-top: var(--space-8);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+    }
+
+    .home-nav a {
+      color: var(--color-accent);
+    }
+
+    .home-nav a:hover {
+      color: var(--color-accent-hover);
+    }
   </style>
 
   <div class="home-intro">
@@ -24,5 +40,9 @@ import Layout from "../layouts/Layout.astro";
     <p class="lead">
       AI can write code and explain things, but it also makes mistakes and sounds confident when it's wrong. This is a collection of patterns for staying in control.
     </p>
+
+    <nav class="home-nav">
+      <a href="/concepts/">Concepts →</a>
+    </nav>
   </div>
 </Layout>
