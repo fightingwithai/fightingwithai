@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import "../../styles/section-index.css";
 
 const patternsRaw = await getCollection("patterns");
 const patterns = [...patternsRaw].sort((a, b) =>
@@ -24,52 +25,10 @@ const firstItem = patterns[0];
 
     {firstItem && (
       <nav class="section-nav">
-        <a href={`/patterns/${firstItem.slug}/`} class="nav-next">
+        <a href={`/patterns/${firstItem.slug}/`}>
           {firstItem.data.title} →
         </a>
       </nav>
     )}
   </article>
 </Layout>
-
-<style>
-  .lead {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-8);
-  }
-
-  .section-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--space-8) 0;
-  }
-
-  .section-list li {
-    margin-bottom: var(--space-3);
-  }
-
-  .section-list a {
-    color: var(--color-accent);
-  }
-
-  .section-list a:hover {
-    color: var(--color-accent-hover);
-  }
-
-  .section-nav {
-    text-align: right;
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
-    font-size: var(--text-sm);
-  }
-
-  .nav-next {
-    color: var(--color-accent);
-  }
-
-  .nav-next:hover {
-    color: var(--color-accent-hover);
-  }
-</style>

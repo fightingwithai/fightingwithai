@@ -49,34 +49,12 @@ const collectionDisplayNames: Record<string, string> = {
   'patterns': 'Patterns'
 };
 
-// Extract first paragraph from markdown body as description
-function extractDescription(body: string): string | undefined {
-  if (!body || body.trim().toLowerCase() === 'todo') return undefined;
-  // Find first non-empty paragraph (skip headers, blank lines)
-  const lines = body.split('\n');
-  let paragraph = '';
-  for (const line of lines) {
-    const trimmed = line.trim();
-    // Skip empty lines, headers, and frontmatter markers
-    if (!trimmed || trimmed.startsWith('#') || trimmed === '---') continue;
-    // Found a content line
-    paragraph = trimmed;
-    break;
-  }
-  // Truncate to ~100 chars for preview
-  if (paragraph.length > 120) {
-    return paragraph.slice(0, 117) + '...';
-  }
-  return paragraph || undefined;
-}
-
-// Create unified navigation list with collection info, section names, and descriptions
+// Create unified navigation list with collection info and section names
 type NavEntry = {
   slug: string;
   title: string;
   collection: string;
   sectionName: string;
-  description?: string;
 };
 
 const allContent: NavEntry[] = [
@@ -85,21 +63,18 @@ const allContent: NavEntry[] = [
     title: e.data.title,
     collection: "concepts",
     sectionName: collectionDisplayNames["concepts"],
-    description: extractDescription(e.body),
   })),
   ...failureModes.map(e => ({
     slug: e.slug,
     title: e.data.title,
     collection: "failure-modes",
     sectionName: collectionDisplayNames["failure-modes"],
-    description: extractDescription(e.body),
   })),
   ...patterns.map(e => ({
     slug: e.slug,
     title: e.data.title,
     collection: "patterns",
     sectionName: collectionDisplayNames["patterns"],
-    description: extractDescription(e.body),
   })),
 ];
 
@@ -108,8 +83,7 @@ const currentIndex = allContent.findIndex(
   (e) => e.slug === entry.slug && e.collection === collectionName
 );
 
-// Calculate prev/next across all sections
-const prev = currentIndex > 0 ? allContent[currentIndex - 1] : null;
+// Calculate next across all sections
 const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
 
 // Resolve related content (relatesTo slugs -> actual entries)
@@ -150,6 +124,6 @@ const currentSection = collectionDisplayNames[collectionName];
     )}
 
     <RelatedContent items={relatedItems} />
-    <ContentNav prev={prev} next={next} currentCollection={collectionName} />
+    <ContentNav next={next} currentCollection={collectionName} />
   </article>
 </Layout>
