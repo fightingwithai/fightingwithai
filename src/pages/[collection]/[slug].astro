@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const collectionNames = ["concepts", "failure-modes", "patterns"] as const;
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const collectionName of ["concepts", "failure-modes", "patterns"]) {
+    const entries = await getCollection(collectionName);
+    for (const entry of entries) {
+      paths.push({
+        params: { collection: collectionName, slug: entry.slug },
+        props: { entry },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
+---
+
+<Layout title={entry.data.title}>
+  <article>
+    <h1>{entry.data.title}</h1>
+
+    {isPlaceholder ? (
+      <div class="placeholder-notice">
+        <p>This content is coming soon.</p>
+      </div>
+    ) : (
+      <Content />
+    )}
+  </article>
+</Layout>
