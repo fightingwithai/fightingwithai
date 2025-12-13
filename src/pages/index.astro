@@ -1,127 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-
-// Fetch all content collections
-const concepts = await getCollection("concepts");
-const failureModes = await getCollection("failure-modes");
-const patterns = await getCollection("patterns");
-
-// Sort alphabetically by title
-concepts.sort((a, b) => a.data.title.localeCompare(b.data.title));
-failureModes.sort((a, b) => a.data.title.localeCompare(b.data.title));
-patterns.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <Layout title="Fighting With AI">
   <style>
-    .intro {
-      max-width: 700px;
-      margin: 2rem auto 0;
-      text-align: left;
-      color: #a3a3a3;
-      line-height: 1.7;
-      font-size: 1.1rem;
+    .home-intro h1 {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
     }
 
-    .intro p {
-      margin-bottom: 1.5rem;
-    }
-
-    .intro ul {
-      margin: 1rem 0 1.5rem 1.5rem;
-    }
-
-    .intro li {
-      margin-bottom: 0.5rem;
-    }
-
-    .content-section {
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: left;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid #262626;
-    }
-
-    .content-section h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #e5e5e5;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-desc {
-      color: #737373;
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-    }
-
-    .content-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .content-list li {
-      margin: 0;
-    }
-
-    .content-list a {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background: #1a1a1a;
-      border: 1px solid #262626;
-      border-radius: 6px;
-      color: #a78bfa;
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-    }
-
-    .content-list a:hover {
-      background: #262626;
-      border-color: #a78bfa;
+    .home-intro .lead {
+      font-size: var(--text-lg);
+      color: var(--color-text-muted);
+      line-height: var(--leading-relaxed);
+      max-width: 600px;
     }
   </style>
 
-  <div class="intro">
-    <p>AI can write code and explain things, but it also makes mistakes and sounds confident when it's wrong.</p>
-
-    <p>This is a collection of patterns covering three areas:</p>
+  <div class="home-intro">
+    <h1>Patterns of AI Coding</h1>
+    <p class="lead">
+      AI can write code and explain things, but it also makes mistakes and sounds confident when it's wrong. This is a collection of patterns for staying in control.
+    </p>
   </div>
-
-  <section class="content-section" id="concepts">
-    <h2>Concepts</h2>
-    <p class="section-desc">AI and machine learning fundamentals that help you understand the technology you're working with.</p>
-    <ul class="content-list">
-      {concepts.map((entry) => (
-        <li><a href={`/concepts/${entry.slug}/`}>{entry.data.title}</a></li>
-      ))}
-    </ul>
-  </section>
-
-  <section class="content-section" id="failure-modes">
-    <h2>Failure Modes</h2>
-    <p class="section-desc">Dynamics that result in unreasonable or unmaintainable outputs from AI.</p>
-    <ul class="content-list">
-      {failureModes.map((entry) => (
-        <li><a href={`/failure-modes/${entry.slug}/`}>{entry.data.title}</a></li>
-      ))}
-    </ul>
-  </section>
-
-  <section class="content-section" id="patterns">
-    <h2>Patterns</h2>
-    <p class="section-desc">Common techniques employed in practice to stay in control.</p>
-    <ul class="content-list">
-      {patterns.map((entry) => (
-        <li><a href={`/patterns/${entry.slug}/`}>{entry.data.title}</a></li>
-      ))}
-    </ul>
-  </section>
 </Layout>

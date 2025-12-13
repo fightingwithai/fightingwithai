@@ -1,0 +1,96 @@
+/* Theme: Dark (Warm Amber)
+   ========================
+   Editorial, warm dark theme with amber accents.
+   Feels like a technical book, not an AI startup.
+*/
+
+:root[data-theme="dark"] {
+  /* ============================================
+     CORE PALETTE
+     ============================================ */
+
+  /* Accent - Warm Amber */
+  --color-accent: #f59e0b;
+  --color-accent-hover: #fbbf24;
+  --color-accent-dim: rgba(245, 158, 11, 0.1);
+  --color-accent-muted: rgba(245, 158, 11, 0.6);
+
+  /* ============================================
+     SURFACES
+     ============================================ */
+
+  /* Background layers (darkest to lightest) */
+  --color-bg: #1c1917;           /* Main background - warm charcoal */
+  --color-bg-sidebar: #0f0e0d;   /* Sidebar - near black */
+  --color-surface: #292524;       /* Cards, elevated elements */
+  --color-surface-hover: #3f3a36; /* Hover state */
+
+  /* ============================================
+     TEXT
+     ============================================ */
+
+  --color-text: #e7e5e4;          /* Primary text - warm white */
+  --color-text-muted: #a8a29e;    /* Secondary text - warm gray */
+  --color-text-faint: #78716c;    /* Tertiary/disabled */
+
+  /* ============================================
+     BORDERS
+     ============================================ */
+
+  --color-border: #3f3a36;        /* Default borders */
+  --color-border-subtle: #292524;  /* Subtle separators */
+
+  /* ============================================
+     SEMANTIC COLORS
+     ============================================ */
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* ============================================
+     SHADOWS (for dark mode)
+     ============================================ */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+
+  /* Color scheme hint for browser */
+  color-scheme: dark;
+}
+
+/* Auto-apply dark theme based on system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]),
+  :root[data-theme="auto"] {
+    --color-accent: #f59e0b;
+    --color-accent-hover: #fbbf24;
+    --color-accent-dim: rgba(245, 158, 11, 0.1);
+    --color-accent-muted: rgba(245, 158, 11, 0.6);
+
+    --color-bg: #1c1917;
+    --color-bg-sidebar: #0f0e0d;
+    --color-surface: #292524;
+    --color-surface-hover: #3f3a36;
+
+    --color-text: #e7e5e4;
+    --color-text-muted: #a8a29e;
+    --color-text-faint: #78716c;
+
+    --color-border: #3f3a36;
+    --color-border-subtle: #292524;
+
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+
+    color-scheme: dark;
+  }
+}

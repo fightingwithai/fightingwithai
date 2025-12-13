@@ -50,3 +50,43 @@ The book is about working *with* AI without letting it mess things up:
 - The goal is staying in control of a powerful tool
 - Named patterns let you recognize situations and know what to do
 - People who work well with AI do better than those who don't use it or blindly trust it
+
+## Technical Stack
+
+- **Framework:** Astro (static site generation)
+- **Content:** Markdown files in `src/content/`
+- **Styling:** CSS variables via design system
+
+## Design System
+
+**IMPORTANT:** All styling must use CSS variables from the design system. Never use hardcoded colors, sizes, or spacing.
+
+### Files
+- `src/styles/design-system.css` - Base tokens (spacing, typography, etc.)
+- `src/styles/theme-dark.css` - Dark theme colors (warm amber)
+- `src/styles/theme-light.css` - Light theme colors (teal)
+
+### Key Variables
+```css
+/* Colors (theme-dependent) */
+var(--color-accent)      /* Primary accent */
+var(--color-bg)          /* Background */
+var(--color-surface)     /* Cards/elevated */
+var(--color-text)        /* Primary text */
+var(--color-text-muted)  /* Secondary text */
+var(--color-border)      /* Borders */
+
+/* Spacing */
+var(--space-2)  /* 8px */
+var(--space-4)  /* 16px */
+var(--space-6)  /* 24px */
+
+/* Typography */
+var(--text-sm)   /* 14px */
+var(--text-base) /* 16px */
+var(--text-lg)   /* 18px */
+```
+
+### Skills
+- `/astro-design-system` - Full design token reference
+- `/astro-islands` - When to use React vs vanilla JS
