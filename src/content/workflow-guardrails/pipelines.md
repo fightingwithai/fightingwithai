@@ -6,76 +6,20 @@ Deterministic workflows that execute without model negotiation. The formatter ru
 
 ## The Problem with Instructions
 
-Telling the model "always run the formatter" doesn't guarantee it happens. The model might:
-
-- Forget
-- Decide it's unnecessary this time
-- Get distracted by something else
-- Require multiple reminders
+"Always run the formatter" is a suggestion. The model may skip it, or require reminders.
 
 Instructions are probabilistic. Pipelines are deterministic.
 
 ## What Pipelines Look Like
 
-A pipeline chains steps that execute automatically:
+A pipeline chains steps where each output feeds the next input. The Unix pipe is the simplest example—`cat error.log | claude -p "summarize"` sends file contents to Claude and outputs the response. One command's output becomes another's input.
 
-```
-Code written → Formatter runs → Linter checks → Tests run → Code committed
-```
-
-Each step triggers the next. The model doesn't decide whether to run them—they just run.
+AI workflows work the same way: code written → formatter runs → linter checks → tests run. Each step triggers automatically.
 
 ## Implementation Options
 
-**Tool-level hooks:**
-Some tools (Claude Code, Cursor) support hooks that fire on events like "file saved" or "tool completed." These are primitives for building pipelines.
+**Tool-level hooks:** Claude Code and Cursor support hooks that fire on events like "file saved" or "tool completed."
 
-**Agent orchestration:**
-A parent agent spawns child agents for specific tasks, reviews their output, and routes work based on results. The parent enforces the pipeline.
+**Agent orchestration:** A parent agent spawns child agents, reviews output, and routes work. The parent enforces the pipeline.
 
-**External automation:**
-CI/CD, pre-commit hooks, file watchers. The pipeline lives outside the AI entirely.
-
-## Why This Matters
-
-The goal is removing negotiation overhead. Compare:
-
-**Without pipelines:**
-> "Run the formatter"
-> "I've made the changes"
-> "You didn't run the formatter"
-> "Let me run it now..."
-
-**With pipelines:**
-> Code written → formatter runs automatically
-
-The second version is faster and more reliable.
-
-## Designing Pipelines
-
-Good candidates for automation:
-
-| Step | Trigger | Why Automate |
-|------|---------|--------------|
-| Formatting | File write | Never argue about style |
-| Linting | File write | Catch issues immediately |
-| Type checking | File write | Don't wait for build |
-| Tests | Before commit | Gate broken code |
-| Cleanup audit | Feature complete | Don't forget debt |
-
-Bad candidates (require judgment):
-
-- Architectural decisions
-- User-facing copy
-- API design choices
-
-## The Spectrum
-
-From most manual to most automated:
-
-1. **Instructions** — "Remember to run X"
-2. **Reminders** — Agent prompts itself after certain events
-3. **Hooks** — External triggers fire on events
-4. **Full pipelines** — Chained deterministic execution
-
-Move right on this spectrum for repetitive, mechanical tasks. Stay left for tasks requiring judgment.
+**External automation:** The pipeline lives outside the AI entirely. [lint-staged](https://github.com/lint-staged/lint-staged) runs formatters and linters on staged files during `git commit`—the model never gets a chance to skip it.

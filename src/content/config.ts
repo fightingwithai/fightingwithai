@@ -32,8 +32,8 @@ const promptEngineering = defineCollection({
   schema: relatedSchema,
 });
 
-// Context Pruning: Techniques for reducing/focusing context
-const contextPruning = defineCollection({
+// Context Management: Techniques for inspecting, reducing, and focusing context
+const contextManagement = defineCollection({
   type: 'content',
   schema: dependencySchema,
 });
@@ -60,7 +60,7 @@ export const collections = {
   concepts,
   'failure-modes': failureModes,
   'prompt-engineering': promptEngineering,
-  'context-pruning': contextPruning,
+  'context-management': contextManagement,
   'context-expanding': contextExpanding,
   'workflow-guardrails': workflowGuardrails,
   'coding-assistants': codingAssistants,

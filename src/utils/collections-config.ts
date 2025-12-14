@@ -6,7 +6,7 @@
 export type CollectionName =
   | "concepts"
   | "prompt-engineering"
-  | "context-pruning"
+  | "context-management"
   | "context-expanding"
   | "workflow-guardrails"
   | "failure-modes"
@@ -36,10 +36,10 @@ export const COLLECTION_CONFIG: Record<CollectionName, CollectionConfig> = {
     description: "How you write and structure what you say to the AI.",
     sortMethod: "alphabetical",
   },
-  "context-pruning": {
-    slug: "context-pruning",
-    displayName: "Context Pruning",
-    description: "Techniques for reducing noise and focusing context.",
+  "context-management": {
+    slug: "context-management",
+    displayName: "Context Management",
+    description: "Techniques for inspecting, reducing, and focusing context.",
     sortMethod: "dependency",
   },
   "context-expanding": {
@@ -75,7 +75,7 @@ export const COLLECTION_CONFIG: Record<CollectionName, CollectionConfig> = {
 export const COLLECTION_NAMES: CollectionName[] = [
   "concepts",
   "prompt-engineering",
-  "context-pruning",
+  "context-management",
   "context-expanding",
   "workflow-guardrails",
   "failure-modes",

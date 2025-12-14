@@ -209,17 +209,19 @@ const collections = await getAllCollectionsSorted();
         font-style: italic;
       }
 
-      /* Article images - bounded and floated on desktop */
+      /* Article images */
       article img {
-        max-width: 200px;
+        max-width: 100%;
         height: auto;
         border-radius: var(--radius-lg);
         border: 2px solid var(--color-border);
       }
 
+      /* Floated thumbnail images - constrained size */
       article .image-float {
         float: right;
         margin: 0 0 var(--space-4) var(--space-6);
+        max-width: 200px;
       }
 
       @media (max-width: 768px) {
@@ -227,10 +229,12 @@ const collections = await getAllCollectionsSorted();
           float: none;
           display: block;
           margin: var(--space-4) auto;
+          max-width: 160px;
         }
 
         article img {
-          max-width: 160px;
+          max-width: 100%;
+          height: auto;
         }
       }
 

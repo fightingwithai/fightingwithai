@@ -9,7 +9,25 @@ A base language model can only produce text. Tools extend what's possible: readi
 
 ## How Tools Work
 
-The model doesn't actually execute anything. It produces structured output (JSON, for example) describing the action to perform:
+The model doesn't actually execute anything. It produces structured output (JSON, for example) describing the action to perform.
+
+Here's an example system prompt that teaches a model to use tools:
+
+```
+You are a coding assistant with access to file tools.
+
+When you need to read or write files, output a JSON tool call:
+
+To read a file:
+{"tool": "read_file", "path": "/path/to/file"}
+
+To write a file:
+{"tool": "write_file", "path": "/path/to/file", "content": "..."}
+
+After outputting a tool call, stop and wait for the result.
+```
+
+When the user asks "What's in src/app.ts?", the model outputs:
 
 ```json
 {
@@ -51,10 +69,10 @@ This creates a loop:
 
 ## Tool Selection
 
-Models learn tool usage during training. Training examples shape which tool gets selected for which situation.
+The model just outputs text. Which tool it "selects" depends on what text it generates - and that depends on how the tools are described in the prompt.
 
 This means:
 - Well-documented tools get used correctly more often
-- Unusual tools may require explicit prompting
-- The model might default to familiar tools even when others would work better
+- Ambiguous descriptions lead to wrong tool choices
+- Clear examples in the prompt improve reliability
 

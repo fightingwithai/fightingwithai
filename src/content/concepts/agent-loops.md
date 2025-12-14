@@ -7,7 +7,7 @@ An agent is a system that perceives its environment and takes actions to achieve
 
 ## The Loop
 
-A basic LLM takes input and produces output. One shot. An agent runs in a loop:
+An agent runs in a loop:
 
 1. Receive input
 2. Predict the next tokens—which may specify a tool call
