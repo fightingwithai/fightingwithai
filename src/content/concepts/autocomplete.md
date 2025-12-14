@@ -11,4 +11,16 @@ A system prompt instructs the model: given these files and the cursor position, 
 
 ## Prompting Without Realizing It
 
-When you write a comment, you're not thinking "prompt." But comments shape predictions. The model pattern-matches on everything in context.
+You type a comment:
+
+```ts
+// validate email format and check if domain exists
+```
+
+Autocomplete suggests:
+
+```ts
+async function validateEmail(email: string): Promise<boolean> {
+```
+
+You weren't thinking "prompt." You were documenting. But that comment went into the context, and the model predicted what comes next. The comment *was* the prompt.
