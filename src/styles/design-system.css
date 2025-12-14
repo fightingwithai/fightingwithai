@@ -12,18 +12,18 @@
      ============================================ */
 
   /* Font Families */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  --font-sans: 'Fira Code', 'SF Mono', 'Monaco', monospace;
+  --font-mono: 'Fira Code', 'SF Mono', 'Monaco', monospace;
 
-  /* Font Sizes - Modular Scale */
+  /* Font Sizes - Modular Scale (18px base for readability) */
   --text-xs: 0.75rem;    /* 12px - Meta, tags */
   --text-sm: 0.875rem;   /* 14px - Small body, captions */
-  --text-base: 1rem;     /* 16px - Body text */
-  --text-lg: 1.125rem;   /* 18px - Large body */
-  --text-xl: 1.25rem;    /* 20px - Small headings */
-  --text-2xl: 1.5rem;    /* 24px - Section headings */
-  --text-3xl: 2rem;      /* 32px - Page headings */
-  --text-4xl: 2.5rem;    /* 40px - Hero headings */
+  --text-base: 1.125rem; /* 18px - Body text */
+  --text-lg: 1.25rem;    /* 20px - Large body */
+  --text-xl: 1.375rem;   /* 22px - Small headings */
+  --text-2xl: 1.625rem;  /* 26px - Section headings */
+  --text-3xl: 2.25rem;   /* 36px - Page headings */
+  --text-4xl: 2.75rem;   /* 44px - Hero headings */
 
   /* Font Weights */
   --font-normal: 400;
@@ -35,8 +35,8 @@
   --leading-tight: 1.25;
   --leading-snug: 1.375;
   --leading-normal: 1.5;
-  --leading-relaxed: 1.625;
-  --leading-loose: 1.75;
+  --leading-relaxed: 1.65;
+  --leading-loose: 1.8;
 
   /* Letter Spacing */
   --tracking-tight: -0.025em;
