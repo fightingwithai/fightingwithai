@@ -7,6 +7,7 @@ import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ContentNav from "../../components/ContentNav.astro";
 import RelatedContent from "../../components/RelatedContent.astro";
+import TextToSpeech from "../../components/TextToSpeech.astro";
 import { getCollection } from "astro:content";
 import {
   COLLECTION_NAMES,
@@ -62,6 +63,8 @@ const config = COLLECTION_CONFIG[collectionName];
     <Breadcrumbs collection={collectionName} title={entry.data.title} />
 
     <h1>{entry.data.title}</h1>
+
+    {!isPlaceholder && <TextToSpeech />}
 
     {isPlaceholder ? (
       <div class="placeholder-notice">
