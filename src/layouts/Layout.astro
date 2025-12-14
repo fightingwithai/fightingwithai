@@ -126,7 +126,7 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
       /* Main Content Area */
       .main-content {
         flex: 1;
-        min-width: 0; /* Allow flex item to shrink below content size */
+        min-width: 0; /* Prevent wide content (e.g., code blocks) from causing page overflow */
         margin-left: var(--sidebar-width);
         padding: var(--space-12) var(--space-16);
         max-width: calc(var(--content-max-width) + var(--space-16) * 2);
@@ -192,8 +192,9 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
         background-color: var(--color-surface);
         padding: var(--space-4);
         border-radius: var(--radius-lg);
-        overflow-x: auto;
         margin: var(--space-4) 0;
+        white-space: pre-wrap;       /* Wrap long lines while preserving whitespace */
+        overflow-wrap: break-word;   /* Break long strings (URLs, etc.) if needed */
       }
 
       article pre code {
