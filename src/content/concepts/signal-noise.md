@@ -41,7 +41,7 @@ The goal isn't maximum information. It's maximum *relevant* information.
 
 ### The Buried Signal
 
-A test fails. The stack trace looks like this:
+A test fails. The stack trace looks like this (the details don't matter—just notice how much noise there is):
 
 ```
 Error: Connection refused

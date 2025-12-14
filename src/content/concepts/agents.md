@@ -1,6 +1,6 @@
 ---
 title: Agents
-dependsOn: large-language-models
+dependsOn: tool-calling
 ---
 
 An agent is a system that perceives its environment and takes actions to achieve a goal.
