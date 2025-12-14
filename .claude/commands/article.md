@@ -1,4 +1,9 @@
-Work on an article at the path: $ARGUMENTS
+Work on an article. If a path is provided, use it: $ARGUMENTS
+
+If no path is provided, use the DevTools MCP to detect the current article:
+- Call `mcp__chrome-devtools__take_snapshot` to get the page content
+- Look for the article title, URL path, or content to identify which article the user is viewing
+- Match it to a file in `src/content/concepts/` or `src/content/pages/`
 
 Follow this process:
 
@@ -18,5 +23,13 @@ Follow this process:
    - No concepts introduced before their dependency
    - No anthropomorphic language
    - Succinct (cut filler words)
+
+## Working with TODO Articles
+
+If the article contains TODO markers or placeholder content:
+- Identify what sections need to be filled in
+- Propose content that fits the pattern catalog style
+- Keep the same structure and formatting as completed articles
+- After completing one TODO article, offer to help with the next one
 
 Wait for user direction before committing.
