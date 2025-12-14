@@ -85,20 +85,48 @@ describe('COLLECTION_CONFIG', () => {
     expect(COLLECTION_CONFIG['failure-modes'].sortMethod).toBe('alphabetical');
   });
 
-  it('patterns uses alphabetical sort', () => {
-    expect(COLLECTION_CONFIG['patterns'].sortMethod).toBe('alphabetical');
+  it('prompt-engineering uses alphabetical sort', () => {
+    expect(COLLECTION_CONFIG['prompt-engineering'].sortMethod).toBe('alphabetical');
+  });
+
+  it('context-pruning uses dependency sort', () => {
+    expect(COLLECTION_CONFIG['context-pruning'].sortMethod).toBe('dependency');
+  });
+
+  it('context-expanding uses dependency sort', () => {
+    expect(COLLECTION_CONFIG['context-expanding'].sortMethod).toBe('dependency');
+  });
+
+  it('workflow-guardrails uses alphabetical sort', () => {
+    expect(COLLECTION_CONFIG['workflow-guardrails'].sortMethod).toBe('alphabetical');
+  });
+
+  it('coding-assistants uses alphabetical sort', () => {
+    expect(COLLECTION_CONFIG['coding-assistants'].sortMethod).toBe('alphabetical');
   });
 });
 
 describe('COLLECTION_NAMES', () => {
   it('contains all expected collections', () => {
     expect(COLLECTION_NAMES).toContain('concepts');
+    expect(COLLECTION_NAMES).toContain('prompt-engineering');
+    expect(COLLECTION_NAMES).toContain('context-pruning');
+    expect(COLLECTION_NAMES).toContain('context-expanding');
+    expect(COLLECTION_NAMES).toContain('workflow-guardrails');
     expect(COLLECTION_NAMES).toContain('failure-modes');
-    expect(COLLECTION_NAMES).toContain('patterns');
+    expect(COLLECTION_NAMES).toContain('coding-assistants');
   });
 
-  it('maintains order: concepts, failure-modes, patterns', () => {
-    expect(COLLECTION_NAMES).toEqual(['concepts', 'failure-modes', 'patterns']);
+  it('maintains expected order with concepts first', () => {
+    expect(COLLECTION_NAMES).toEqual([
+      'concepts',
+      'prompt-engineering',
+      'context-pruning',
+      'context-expanding',
+      'workflow-guardrails',
+      'failure-modes',
+      'coding-assistants',
+    ]);
   });
 });
 
@@ -111,7 +139,23 @@ describe('getDisplayName', () => {
     expect(getDisplayName('failure-modes')).toBe('Failure Modes');
   });
 
-  it('returns correct display name for patterns', () => {
-    expect(getDisplayName('patterns')).toBe('Patterns');
+  it('returns correct display name for prompt-engineering', () => {
+    expect(getDisplayName('prompt-engineering')).toBe('Prompt Engineering');
+  });
+
+  it('returns correct display name for context-pruning', () => {
+    expect(getDisplayName('context-pruning')).toBe('Context Pruning');
+  });
+
+  it('returns correct display name for context-expanding', () => {
+    expect(getDisplayName('context-expanding')).toBe('Context Expanding');
+  });
+
+  it('returns correct display name for workflow-guardrails', () => {
+    expect(getDisplayName('workflow-guardrails')).toBe('Workflow & Guardrails');
+  });
+
+  it('returns correct display name for coding-assistants', () => {
+    expect(getDisplayName('coding-assistants')).toBe('Coding Assistants');
   });
 });

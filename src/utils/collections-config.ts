@@ -3,7 +3,14 @@
  * No Astro dependencies - can be unit tested directly.
  */
 
-export type CollectionName = "concepts" | "failure-modes" | "patterns";
+export type CollectionName =
+  | "concepts"
+  | "prompt-engineering"
+  | "context-management"
+  | "context-expanding"
+  | "workflow-guardrails"
+  | "failure-modes"
+  | "coding-assistants";
 
 export interface CollectionConfig {
   slug: CollectionName;
@@ -20,8 +27,32 @@ export const COLLECTION_CONFIG: Record<CollectionName, CollectionConfig> = {
   "concepts": {
     slug: "concepts",
     displayName: "Concepts",
-    description: "AI and machine learning fundamentals that help you understand the technology you're working with.",
+    description: "Foundational knowledge for understanding AI-assisted work.",
     sortMethod: "dependency",
+  },
+  "prompt-engineering": {
+    slug: "prompt-engineering",
+    displayName: "Prompt Engineering",
+    description: "How you write and structure what you say to the AI.",
+    sortMethod: "alphabetical",
+  },
+  "context-management": {
+    slug: "context-management",
+    displayName: "Context Management",
+    description: "Techniques for inspecting, reducing, and focusing context.",
+    sortMethod: "dependency",
+  },
+  "context-expanding": {
+    slug: "context-expanding",
+    displayName: "Context Expanding",
+    description: "Techniques for adding useful context to guide the model.",
+    sortMethod: "dependency",
+  },
+  "workflow-guardrails": {
+    slug: "workflow-guardrails",
+    displayName: "Workflow & Guardrails",
+    description: "How you guide the AI through a task.",
+    sortMethod: "alphabetical",
   },
   "failure-modes": {
     slug: "failure-modes",
@@ -29,18 +60,27 @@ export const COLLECTION_CONFIG: Record<CollectionName, CollectionConfig> = {
     description: "Dynamics that result in unreasonable or unmaintainable outputs from AI.",
     sortMethod: "alphabetical",
   },
-  "patterns": {
-    slug: "patterns",
-    displayName: "Patterns",
-    description: "Common techniques employed in practice to stay in control.",
+  "coding-assistants": {
+    slug: "coding-assistants",
+    displayName: "Coding Assistants",
+    description: "AI coding assistants and how they implement these patterns.",
     sortMethod: "alphabetical",
   },
 };
 
 /**
- * All collection names in display order.
+ * All collection names in sidebar display order.
+ * Concepts come first as foundational knowledge.
  */
-export const COLLECTION_NAMES: CollectionName[] = ["concepts", "failure-modes", "patterns"];
+export const COLLECTION_NAMES: CollectionName[] = [
+  "concepts",
+  "prompt-engineering",
+  "context-management",
+  "context-expanding",
+  "workflow-guardrails",
+  "failure-modes",
+  "coding-assistants",
+];
 
 /**
  * Sort entries alphabetically by title.

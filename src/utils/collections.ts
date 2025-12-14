@@ -28,11 +28,24 @@ export {
   type RelatedItem,
 } from "./collections-config";
 
-// Type for any collection entry (concepts, failure-modes, patterns)
+// Type for any collection entry
 export type AnyCollectionEntry =
   | CollectionEntry<"concepts">
   | CollectionEntry<"failure-modes">
-  | CollectionEntry<"patterns">;
+  | CollectionEntry<"prompt-engineering">
+  | CollectionEntry<"context-engineering">
+  | CollectionEntry<"workflow-guardrails">
+  | CollectionEntry<"tools">;
+
+/**
+ * A collection with its entries, ready for rendering.
+ */
+export interface CollectionWithEntries {
+  name: CollectionName;
+  displayName: string;
+  description: string;
+  entries: AnyCollectionEntry[];
+}
 
 /**
  * Fetch and sort a collection based on its configured sort method.
@@ -48,43 +61,44 @@ export async function getCollectionSorted(name: CollectionName): Promise<AnyColl
 }
 
 /**
- * Fetch and sort all collections. Returns them in sidebar order.
+ * Fetch and sort all collections as an ordered array.
+ * Order is defined by COLLECTION_NAMES - the single source of truth.
  * Used by Layout.astro for navigation.
  */
-export async function getAllCollectionsSorted(): Promise<{
-  concepts: AnyCollectionEntry[];
-  failureModes: AnyCollectionEntry[];
-  patterns: AnyCollectionEntry[];
-}> {
-  const [concepts, failureModes, patterns] = await Promise.all([
-    getCollectionSorted("concepts"),
-    getCollectionSorted("failure-modes"),
-    getCollectionSorted("patterns"),
-  ]);
+export async function getAllCollectionsSorted(): Promise<CollectionWithEntries[]> {
+  const results: CollectionWithEntries[] = [];
 
-  return { concepts, failureModes, patterns };
+  for (const name of COLLECTION_NAMES) {
+    const config = COLLECTION_CONFIG[name];
+    const entries = await getCollectionSorted(name);
+
+    results.push({
+      name,
+      displayName: config.displayName,
+      description: config.description,
+      entries,
+    });
+  }
+
+  return results;
 }
 
 /**
  * Build a unified navigation list across all sections.
  * Used for prev/next navigation that crosses section boundaries.
+ * Order is defined by COLLECTION_NAMES.
  */
 export async function buildUnifiedNavList(): Promise<NavEntry[]> {
-  const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
+  const collections = await getAllCollectionsSorted();
 
-  const toNavEntry = (entries: AnyCollectionEntry[], collection: CollectionName): NavEntry[] =>
-    entries.map(e => ({
-      slug: e.slug,
-      title: e.data.title,
-      collection,
-      sectionName: COLLECTION_CONFIG[collection].displayName,
-    }));
-
-  return [
-    ...toNavEntry(concepts, "concepts"),
-    ...toNavEntry(failureModes, "failure-modes"),
-    ...toNavEntry(patterns, "patterns"),
-  ];
+  return collections.flatMap(collection =>
+    collection.entries.map(entry => ({
+      slug: entry.slug,
+      title: entry.data.title,
+      collection: collection.name,
+      sectionName: collection.displayName,
+    }))
+  );
 }
 
 /**

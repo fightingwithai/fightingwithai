@@ -2,13 +2,16 @@
 
 ## Overview
 
-Content is organized into three collections in `src/content/`:
+Content is organized into collections in `src/content/`. The single source of truth for collection order is `COLLECTION_NAMES` in `src/utils/collections-config.ts`.
 
 | Collection | Path | Purpose |
 |------------|------|---------|
-| Concepts | `src/content/concepts/` | AI fundamentals |
+| Concepts | `src/content/concepts/` | Foundational knowledge for AI-assisted work |
+| Prompt Engineering | `src/content/prompt-engineering/` | How you write and structure prompts |
+| Context Engineering | `src/content/context-engineering/` | What info AI has access to and when |
+| Workflow & Guardrails | `src/content/workflow-guardrails/` | How you guide AI through a task |
 | Failure Modes | `src/content/failure-modes/` | What goes wrong |
-| Patterns | `src/content/patterns/` | Techniques that work |
+| Tools | `src/content/tools/` | AI coding assistants |
 
 ## Ordering: Linked List via `dependsOn`
 
@@ -71,6 +74,18 @@ const concepts = sortCollectionByDependency(await getCollection("concepts"));
 2. Set `dependsOn` to the slug of what should come before it
 3. If inserting between A and B: set new item's `dependsOn` to A, update B's `dependsOn` to new item
 
+## Adding New Collections
+
+To add a new collection:
+
+1. Create the directory: `src/content/new-collection/`
+2. Add to `src/content/config.ts` schema
+3. Add to `COLLECTION_NAMES` array in `src/utils/collections-config.ts` (this controls order)
+4. Add to `COLLECTION_CONFIG` in the same file (display name, description, sort method)
+5. Add to `AnyCollectionEntry` type in `src/utils/collections.ts`
+
+Everything else (sidebar, pages, navigation) will automatically pick up the new collection.
+
 ## Tests
 
 Run `npm test` - the sorting logic has 22 tests covering:
@@ -86,6 +101,8 @@ Run `npm test` - the sorting logic has 22 tests covering:
 | File | Purpose |
 |------|---------|
 | `src/content/config.ts` | Schema definitions |
+| `src/utils/collections-config.ts` | Collection names, order, and metadata |
+| `src/utils/collections.ts` | Astro integration and fetching |
 | `src/utils/sortByDependency.ts` | Sorting utility |
 | `src/utils/sortByDependency.test.ts` | Test suite |
 | `src/layouts/Layout.astro` | Uses sorting for nav |
