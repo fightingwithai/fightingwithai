@@ -1,5 +1,5 @@
 ---
-title: Worktrees and Sandboxing
+title: Worktrees
 ---
 
 todo

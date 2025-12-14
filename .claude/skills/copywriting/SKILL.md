@@ -43,6 +43,18 @@ AVOID ANTHROPOMORPHIZING THE MODEL. Use mechanistic language instead of implying
 - One idea per bullet point
 - If you can say it in fewer words, do
 
+## Tone
+
+Describe, don't prescribe. This guide documents patterns—it doesn't tell people what to do.
+
+| Avoid | Use Instead |
+|-------|-------------|
+| "You should..." | "One approach is..." |
+| "Always do X" | "X is an option when..." |
+| "The right way is..." | "This pattern involves..." |
+
+Define terms neutrally. Let readers decide what works for them.
+
 ## Examples
 
 Bad:

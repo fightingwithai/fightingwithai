@@ -1,5 +1,5 @@
 ---
-title: Pipelines
+title: Pipelines and Hooks
 ---
 
 Deterministic workflows that execute without model negotiation. The formatter runs before code hits disk. The linter runs after. No arguing required.
