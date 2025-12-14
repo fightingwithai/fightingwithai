@@ -1,0 +1,276 @@
+---
+/**
+ * Audio player for pre-generated TTS files.
+ * Simple play/pause with progress bar and speed control.
+ *
+ * Reads the audio manifest at build time to get the correct filename
+ * (with numeric prefix like "01-context.wav").
+ */
+import { readFileSync, existsSync } from 'fs';
+import { resolve } from 'path';
+
+interface Props {
+  collection: string;
+  slug: string;
+}
+
+interface ManifestEntry {
+  filename: string;
+  duration: number;
+  size: number;
+}
+
+interface Manifest {
+  entries: Record<string, ManifestEntry>;
+}
+
+const { collection, slug } = Astro.props;
+
+// Read manifest at build time to get the correct filename
+let audioSrc = '';
+const manifestPath = resolve(process.cwd(), 'public/audio/manifest.json');
+
+if (existsSync(manifestPath)) {
+  try {
+    const manifestContent = readFileSync(manifestPath, 'utf-8');
+    const manifest: Manifest = JSON.parse(manifestContent);
+    const key = `${collection}/${slug}`;
+    const entry = manifest.entries[key];
+
+    if (entry?.filename) {
+      audioSrc = `/audio/${collection}/${entry.filename}`;
+    }
+  } catch {
+    // Manifest doesn't exist or is invalid - audioSrc stays empty
+  }
+}
+---
+
+{audioSrc && (
+  <div class="audio-player" data-audio-src={audioSrc}>
+    <button class="audio-btn" aria-label="Play article">
+      <span class="icon play-icon">▶</span>
+      <span class="icon pause-icon hidden">⏸</span>
+      <span class="label">Listen</span>
+    </button>
+
+    <div class="progress-container hidden">
+      <input type="range" class="progress" value="0" min="0" max="100" step="1" />
+      <span class="time">0:00 / 0:00</span>
+    </div>
+
+    <div class="speed-control hidden">
+      <label for="audio-speed" class="sr-only">Speed</label>
+      <select id="audio-speed" aria-label="Playback speed">
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.25">1.25×</option>
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+    </div>
+  </div>
+)}
+
+<style>
+  .audio-player {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .audio-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-family: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+  }
+
+  .audio-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .audio-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .audio-btn.playing {
+    background-color: var(--color-accent-dim);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .icon {
+    font-size: var(--text-sm);
+    line-height: 1;
+  }
+
+  .label {
+    font-size: var(--text-sm);
+  }
+
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .progress {
+    flex: 1;
+    height: 4px;
+    cursor: pointer;
+    accent-color: var(--color-accent);
+  }
+
+  .time {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .speed-control select {
+    padding: var(--space-1) var(--space-2);
+    font-family: inherit;
+    font-size: var(--text-sm);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--transition-base);
+  }
+
+  .speed-control select:hover {
+    border-color: var(--color-accent);
+  }
+
+  .speed-control select:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Hide entire player if audio doesn't exist */
+  .no-audio {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  const player = document.querySelector('.audio-player');
+  if (!player) return;
+
+  const audioSrc = player.dataset.audioSrc;
+  const btn = player.querySelector('.audio-btn');
+  const playIcon = player.querySelector('.play-icon');
+  const pauseIcon = player.querySelector('.pause-icon');
+  const label = player.querySelector('.label');
+  const progressContainer = player.querySelector('.progress-container');
+  const progress = player.querySelector('.progress');
+  const timeDisplay = player.querySelector('.time');
+  const speedControl = player.querySelector('.speed-control');
+  const speedSelect = player.querySelector('#audio-speed');
+
+  let audio = null;
+  let isPlaying = false;
+
+  function formatTime(seconds) {
+    if (!isFinite(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  function updateUI() {
+    playIcon.classList.toggle('hidden', isPlaying);
+    pauseIcon.classList.toggle('hidden', !isPlaying);
+    label.textContent = isPlaying ? 'Pause' : 'Listen';
+    btn.classList.toggle('playing', isPlaying);
+    btn.setAttribute('aria-label', isPlaying ? 'Pause article' : 'Play article');
+    progressContainer.classList.toggle('hidden', !audio);
+    speedControl.classList.toggle('hidden', !audio);
+  }
+
+  function initAudio() {
+    if (audio) return;
+
+    audio = new Audio(audioSrc);
+    audio.playbackRate = parseFloat(speedSelect.value);
+
+    audio.addEventListener('loadedmetadata', () => {
+      progress.max = Math.floor(audio.duration);
+      timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      progress.value = Math.floor(audio.currentTime);
+      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    });
+
+    audio.addEventListener('ended', () => {
+      isPlaying = false;
+      audio.currentTime = 0;
+      updateUI();
+    });
+
+    audio.addEventListener('error', () => {
+      player.classList.add('no-audio');
+    });
+  }
+
+  btn.addEventListener('click', () => {
+    initAudio();
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {
+        player.classList.add('no-audio');
+      });
+    }
+    isPlaying = !isPlaying;
+    updateUI();
+  });
+
+  progress.addEventListener('input', () => {
+    if (audio) {
+      audio.currentTime = parseFloat(progress.value);
+    }
+  });
+
+  speedSelect.addEventListener('change', () => {
+    if (audio) {
+      audio.playbackRate = parseFloat(speedSelect.value);
+    }
+  });
+
+  // Check if audio file exists before showing player
+  fetch(audioSrc, { method: 'HEAD' })
+    .then(res => {
+      if (!res.ok) player.classList.add('no-audio');
+    })
+    .catch(() => player.classList.add('no-audio'));
+})();
+</script>
