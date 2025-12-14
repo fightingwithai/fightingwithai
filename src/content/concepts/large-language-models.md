@@ -27,3 +27,11 @@ Picture a line. Put "sad" at 0, "happy" at 100. Now every word gets a number bas
 Words with similar meanings get similar numbers. The computer can now "see" that happy, joyful, and glad cluster together—they're all high numbers on this line.
 
 Real embeddings use thousands of these number lines at once, but the idea is the same.
+
+## A Compressed JPEG of the Internet
+
+Think of an LLM as a compressed JPEG of its training data.
+
+Training takes billions of documents and compresses them into model weights. Like JPEG compression, some information survives intact. Other information gets lost or blurred. The model stores patterns, not facts.
+
+Where information is missing, the model fills gaps—the same way a heavily compressed image invents pixels that weren't in the original. The output looks coherent, but some of it was reconstructed, not recalled.

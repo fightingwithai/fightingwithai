@@ -15,6 +15,8 @@ When the AI lacks the information it needs to do the job. It's working blind, so
 
 **Drowned context.** Noise buries the signal. After enough retries, guesses, and failed attempts, the original goal gets pushed out of effective attention.
 
+**Ambiguous names.** This website once had both a "tools" page explaining tool calling and a "tools" collection listing coding assistants. "Edit the tools page" was ambiguous for AI and humans alike. We renamed them to "tool use" and "coding assistants"—clearer for everyone.
+
 ## Symptoms
 
 - Actions that don't relate to the actual task
@@ -26,3 +28,5 @@ When the AI lacks the information it needs to do the job. It's working blind, so
 For missing context: give it what it needs. Point to the file, paste the error, show the output.
 
 For drowned context: start fresh. Summarize where you are and what you need, or begin a new conversation.
+
+For ambiguous names: rename things. If disambiguation helps the AI, it probably helps your users too.

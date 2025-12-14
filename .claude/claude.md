@@ -59,10 +59,11 @@ The book is about working *with* AI without letting it mess things up:
 
 ## Skills
 
-See `.claude/skills/` for technical guidance:
+See `.claude/skills/` for technical guidance on Astro patterns, content ordering, copywriting, and more.
 
-- `astro-design-system/` - CSS variables and theming
-- `astro-images/` - Image optimization with astro:assets
+## Workflow
+
+After implementing features that involve iteration or touch multiple files, run the `/code-cleanup` command to audit for technical debt before moving on.
 
 ## Linting
 

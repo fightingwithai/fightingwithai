@@ -1,5 +1,0 @@
----
-title: Clear / Compact
----
-
-todo

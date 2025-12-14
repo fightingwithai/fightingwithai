@@ -16,7 +16,8 @@ interface Props {
 const { title, description = "Fighting With AI - Patterns of AI Coding", currentSection, currentSectionSlug, pageTitle } = Astro.props;
 
 // Fetch all collections (sorted according to their config) for sidebar navigation
-const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
+// Order is defined by COLLECTION_NAMES in collections-config.ts
+const collections = await getAllCollectionsSorted();
 ---
 
 <!doctype html>
@@ -421,19 +422,15 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
         <span id="theme-label">Light</span>
       </button>
 
-      <div class="nav-section-title">Concepts</div>
-      {concepts.map((entry) => (
-        <a class="nav-item" href={`/concepts/${entry.slug}/`}>{entry.data.title}</a>
-      ))}
-
-      <div class="nav-section-title">Failure Modes</div>
-      {failureModes.map((entry) => (
-        <a class="nav-item" href={`/failure-modes/${entry.slug}/`}>{entry.data.title}</a>
-      ))}
-
-      <div class="nav-section-title">Patterns</div>
-      {patterns.map((entry) => (
-        <a class="nav-item" href={`/patterns/${entry.slug}/`}>{entry.data.title}</a>
+      {collections.map((collection) => (
+        collection.entries.length > 0 && (
+          <>
+            <div class="nav-section-title">{collection.displayName}</div>
+            {collection.entries.map((entry) => (
+              <a class="nav-item" href={`/${collection.name}/${entry.slug}/`}>{entry.data.title}</a>
+            ))}
+          </>
+        )
       ))}
 
     </nav>

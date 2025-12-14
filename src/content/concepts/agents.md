@@ -3,19 +3,19 @@ title: Agents
 dependsOn: large-language-models
 ---
 
-An agent is a multi-turn LLM that interacts with its environment using tools.
+An agent is a system that perceives its environment and takes actions to achieve a goal.
 
 ## The Loop
 
 A basic LLM takes input and produces output. One shot. An agent runs in a loop:
 
-1. Receive a prompt
-2. Decide what tool to use (or respond directly)
-3. Execute the tool
-4. Observe the result
-5. Repeat until done
+1. Receive input
+2. Predict the next tokens—which may specify a tool call
+3. The system executes any tool calls
+4. Tool output becomes part of the context
+5. Repeat until complete
 
-Each iteration adds to the [context](/concepts/context). The agent builds up knowledge about your codebase, the state of your files, and what it's already tried.
+Each iteration extends the [context](/concepts/context). The context accumulates information about your codebase, file states, and previous attempts.
 
 ## Why Tools Matter
 
