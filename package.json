@@ -9,6 +9,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
+    "audio:generate": "npx tsx scripts/generate-audio.ts",
+    "audio:clean": "rm -rf public/audio",
     "prepare": "husky"
   },
   "lint-staged": {

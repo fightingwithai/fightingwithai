@@ -7,7 +7,7 @@ import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ContentNav from "../../components/ContentNav.astro";
 import RelatedContent from "../../components/RelatedContent.astro";
-import TextToSpeech from "../../components/TextToSpeech.astro";
+import AudioPlayer from "../../components/AudioPlayer.astro";
 import { getCollection } from "astro:content";
 import {
   COLLECTION_NAMES,
@@ -64,7 +64,7 @@ const config = COLLECTION_CONFIG[collectionName];
 
     <h1>{entry.data.title}</h1>
 
-    {!isPlaceholder && <TextToSpeech />}
+    {!isPlaceholder && <AudioPlayer collection={collectionName} slug={entry.slug} />}
 
     {isPlaceholder ? (
       <div class="placeholder-notice">
