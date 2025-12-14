@@ -125,10 +125,11 @@ const { concepts, failureModes, patterns } = await getAllCollectionsSorted();
 
       /* Main Content Area */
       .main-content {
+        flex: 1;
+        min-width: 0; /* Allow flex item to shrink below content size */
         margin-left: var(--sidebar-width);
         padding: var(--space-12) var(--space-16);
         max-width: calc(var(--content-max-width) + var(--space-16) * 2);
-        width: 100%;
       }
 
       .main-content h1 {
