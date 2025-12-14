@@ -23,4 +23,4 @@ Autocomplete suggests:
 async function validateEmail(email: string): Promise<boolean> {
 ```
 
-You weren't thinking "prompt." You were documenting. But that comment went into the context, and the model predicted what comes next. The comment *was* the prompt.
+You weren't thinking "prompt." You were documenting. But that comment went into the context, and the model predicted what comes next. The comment—and everything else in the context—*was* the prompt.
