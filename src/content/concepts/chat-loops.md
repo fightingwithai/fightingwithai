@@ -1,5 +1,5 @@
 ---
-title: Chats
+title: Chat Loops
 dependsOn: autocomplete
 ---
 

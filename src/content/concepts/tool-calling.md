@@ -1,6 +1,6 @@
 ---
 title: Tool Calling
-dependsOn: chats
+dependsOn: chat-loops
 ---
 
 Tools are capabilities the model can invoke to interact with the world beyond text generation.

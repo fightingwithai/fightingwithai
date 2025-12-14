@@ -1,6 +1,6 @@
 ---
 title: Chain of Thought
-dependsOn: large-language-models
+dependsOn: chat-loops
 ---
 
 Chain of thought (also called "thinking mode") prompts the model to generate text simulating what a human might write if asked to document their thought process.
