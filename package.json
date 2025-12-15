@@ -9,7 +9,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "cd node_modules/sailkit && npm run build"
   },
   "lint-staged": {
     "*.{astro,mdx,md,html,jsx,tsx}": "npm run lint:assets"

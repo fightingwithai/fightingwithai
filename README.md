@@ -13,12 +13,10 @@ npm run dev
 
 ### Sailkit
 
-This project uses [sailkit](https://github.com/joshribakoff/sailkit) installed directly from GitHub. The `dist/` folder is gitignored in that repo, so npm's `prepare` script doesn't always build it automatically during git installs.
+This project uses [sailkit](https://github.com/joshribakoff/sailkit) installed directly from GitHub. The `dist/` folder is gitignored in that repo, so a `postinstall` script builds it automatically after `npm install`.
 
-If you see build errors related to sailkit/compass after a fresh `npm install`, run:
+If you still see build errors related to sailkit/compass, run manually:
 
 ```bash
 cd node_modules/sailkit && npm run build
 ```
-
-Then retry your build.
