@@ -46,6 +46,7 @@ const allContent = await buildUnifiedNavList();
 const currentIndex = allContent.findIndex(
   (e) => e.slug === entry.slug && e.collection === collectionName
 );
+const prev = currentIndex > 0 ? allContent[currentIndex - 1] : null;
 const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
 
 const relatedItems = await resolveRelatedContent(entry.data.relatesTo || []);
@@ -75,6 +76,6 @@ const config = COLLECTION_CONFIG[collectionName];
     )}
 
     <RelatedContent items={relatedItems} />
-    <ContentNav next={next} currentCollection={collectionName} />
+    <ContentNav prev={prev} next={next} currentCollection={collectionName} />
   </article>
 </Layout>

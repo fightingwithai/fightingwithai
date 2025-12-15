@@ -5,8 +5,7 @@
 Navigation follows the Neovim documentation approach: **minimal, content-first**.
 
 - Simple text links, not cards or buttons
-- Single "next" link only - no previous
-- Right-aligned at the bottom of content
+- Previous link on left, next link on right
 - Section labels only when crossing to a new section
 
 ## Navigation Flow
@@ -30,19 +29,20 @@ Used on **article pages** (`[collection]/[slug].astro`).
 ```
 
 **Behavior:**
-- Only shows "next" link (prev is kept in interface for potential future use)
-- When next article is in same section: shows just title
+- Shows previous link on left, next link on right (flexbox layout)
+- When navigating within same section: shows just title
 - When crossing sections: shows section label above title
+- Boundary handling: no prev on first page, no next on last page
 
-**Example output (same section):**
+**Example output (within section):**
 ```
-                                        Context →
+← Large Language Models                    Context →
 ```
 
 **Example output (crossing sections):**
 ```
-                                   FAILURE MODES
-                               Context Collapse →
+← Context Engineering              PROMPT ENGINEERING
+                               Adversarial Prompting →
 ```
 
 ### Section Index Pages
@@ -64,15 +64,21 @@ Each section index (`concepts/index.astro`, etc.) has inline navigation:
 All navigation uses the same minimal style:
 
 ```css
-.section-nav {
-  text-align: right;
+.content-nav {
+  display: flex;
+  justify-content: space-between;
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-border);
   font-size: var(--text-sm);
 }
 
+.nav-prev,
 .nav-next {
   color: var(--color-accent);
+}
+
+.nav-next {
+  text-align: right;
 }
 
 .section-label {
@@ -87,15 +93,14 @@ All navigation uses the same minimal style:
 ## Rules
 
 ### DO:
-- Keep navigation minimal - just a link with arrow
-- Right-align navigation
+- Keep navigation minimal - just links with arrows
+- Previous on left, next on right (flexbox space-between)
 - Use border-top separator
 - Show section label only when crossing sections
 - Link section indexes to first article
 
 ### DON'T:
 - Add cards, backgrounds, or borders around links
-- Add both prev and next (just next)
 - Put navigation at both top and bottom (just bottom)
 - Link section indexes to next section (link to first article)
 - Add descriptions or metadata to nav links

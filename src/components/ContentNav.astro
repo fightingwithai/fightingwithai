@@ -7,41 +7,59 @@ interface NavItem {
 }
 
 interface Props {
+  prev: NavItem | null;
   next: NavItem | null;
   currentCollection: string;
 }
 
-const { next, currentCollection } = Astro.props;
+const { prev, next, currentCollection } = Astro.props;
 
 // Check if navigating to a different section
-const crossingToNewSection = next && next.collection !== currentCollection;
+const crossingToPrevSection = prev && prev.collection !== currentCollection;
+const crossingToNextSection = next && next.collection !== currentCollection;
 ---
 
-{next && (
+{(prev || next) && (
   <nav class="content-nav" aria-label="Page navigation">
-    <a href={`/${next.collection}/${next.slug}/`} class="nav-next">
-      {crossingToNewSection && <span class="section-label">{next.sectionName}</span>}
-      <span class="nav-title">{next.title} →</span>
-    </a>
+    {prev ? (
+      <a href={`/${prev.collection}/${prev.slug}/`} class="nav-prev">
+        {crossingToPrevSection && <span class="section-label">{prev.sectionName}</span>}
+        <span class="nav-title">← {prev.title}</span>
+      </a>
+    ) : <span />}
+    {next && (
+      <a href={`/${next.collection}/${next.slug}/`} class="nav-next">
+        {crossingToNextSection && <span class="section-label">{next.sectionName}</span>}
+        <span class="nav-title">{next.title} →</span>
+      </a>
+    )}
   </nav>
 )}
 
 <style>
   .content-nav {
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     padding-top: var(--space-4);
     margin-top: var(--space-6);
     border-top: 1px solid var(--color-border);
     font-size: var(--text-sm);
   }
 
+  .nav-prev,
   .nav-next {
     color: var(--color-accent);
     text-decoration: none;
   }
 
+  .nav-prev:hover,
   .nav-next:hover {
     color: var(--color-accent-hover);
+  }
+
+  .nav-next {
+    text-align: right;
   }
 
   .section-label {
