@@ -10,7 +10,7 @@
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
     "prepare": "husky",
-    "postinstall": "cd node_modules/sailkit && npm run build"
+    "postinstall": "cd node_modules/sailkit && npm install && npm run build"
   },
   "lint-staged": {
     "*.{astro,mdx,md,html,jsx,tsx}": "npm run lint:assets"
@@ -18,7 +18,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "astro": "^5.0.0",
-    "sailkit": "github:joshribakoff/sailkit#main"
+    "sailkit": "github:joshribakoff/sailkit#atlas-magic-links"
   },
   "devDependencies": {
     "glob": "^11.0.0",
