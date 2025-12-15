@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
+    "@sailkit/lantern": "github:joshribakoff/sailkit?path=packages/lantern#lantern-theme-toggle",
     "astro": "^5.0.0"
   },
   "devDependencies": {
