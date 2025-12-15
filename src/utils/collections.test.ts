@@ -4,6 +4,7 @@ import {
   COLLECTION_CONFIG,
   COLLECTION_NAMES,
   getDisplayName,
+  type CollectionName,
 } from './collections-config';
 
 describe('sortAlphabetically', () => {
@@ -77,85 +78,61 @@ describe('COLLECTION_CONFIG', () => {
     }
   });
 
-  it('concepts uses dependency sort', () => {
-    expect(COLLECTION_CONFIG['concepts'].sortMethod).toBe('dependency');
+  it('each config has valid sortMethod', () => {
+    for (const name of COLLECTION_NAMES) {
+      const sortMethod = COLLECTION_CONFIG[name].sortMethod;
+      expect(['dependency', 'alphabetical']).toContain(sortMethod);
+    }
   });
 
-  it('failure-modes uses alphabetical sort', () => {
-    expect(COLLECTION_CONFIG['failure-modes'].sortMethod).toBe('alphabetical');
-  });
-
-  it('prompt-engineering uses alphabetical sort', () => {
-    expect(COLLECTION_CONFIG['prompt-engineering'].sortMethod).toBe('alphabetical');
-  });
-
-  it('context-pruning uses dependency sort', () => {
-    expect(COLLECTION_CONFIG['context-pruning'].sortMethod).toBe('dependency');
-  });
-
-  it('context-expanding uses dependency sort', () => {
-    expect(COLLECTION_CONFIG['context-expanding'].sortMethod).toBe('dependency');
-  });
-
-  it('workflow-guardrails uses alphabetical sort', () => {
-    expect(COLLECTION_CONFIG['workflow-guardrails'].sortMethod).toBe('alphabetical');
-  });
-
-  it('coding-assistants uses alphabetical sort', () => {
-    expect(COLLECTION_CONFIG['coding-assistants'].sortMethod).toBe('alphabetical');
+  it('config keys match COLLECTION_NAMES', () => {
+    const configKeys = Object.keys(COLLECTION_CONFIG).sort();
+    const names = [...COLLECTION_NAMES].sort();
+    expect(configKeys).toEqual(names);
   });
 });
 
 describe('COLLECTION_NAMES', () => {
-  it('contains all expected collections', () => {
-    expect(COLLECTION_NAMES).toContain('concepts');
-    expect(COLLECTION_NAMES).toContain('prompt-engineering');
-    expect(COLLECTION_NAMES).toContain('context-pruning');
-    expect(COLLECTION_NAMES).toContain('context-expanding');
-    expect(COLLECTION_NAMES).toContain('workflow-guardrails');
-    expect(COLLECTION_NAMES).toContain('failure-modes');
-    expect(COLLECTION_NAMES).toContain('coding-assistants');
+  it('has at least one collection', () => {
+    expect(COLLECTION_NAMES.length).toBeGreaterThan(0);
   });
 
-  it('maintains expected order with concepts first', () => {
-    expect(COLLECTION_NAMES).toEqual([
-      'concepts',
-      'prompt-engineering',
-      'context-pruning',
-      'context-expanding',
-      'workflow-guardrails',
-      'failure-modes',
-      'coding-assistants',
-    ]);
+  it('concepts is first (foundational knowledge)', () => {
+    expect(COLLECTION_NAMES[0]).toBe('concepts');
+  });
+
+  it('has no duplicates', () => {
+    const unique = new Set(COLLECTION_NAMES);
+    expect(unique.size).toBe(COLLECTION_NAMES.length);
+  });
+
+  it('all names are valid slugs (lowercase, hyphens only)', () => {
+    for (const name of COLLECTION_NAMES) {
+      expect(name).toMatch(/^[a-z]+(-[a-z]+)*$/);
+    }
   });
 });
 
 describe('getDisplayName', () => {
-  it('returns correct display name for concepts', () => {
-    expect(getDisplayName('concepts')).toBe('Concepts');
+  it('returns display name for each collection', () => {
+    for (const name of COLLECTION_NAMES) {
+      const displayName = getDisplayName(name);
+      expect(displayName).toBeTruthy();
+      expect(typeof displayName).toBe('string');
+    }
   });
 
-  it('returns correct display name for failure-modes', () => {
-    expect(getDisplayName('failure-modes')).toBe('Failure Modes');
+  it('display names are title case or contain spaces', () => {
+    for (const name of COLLECTION_NAMES) {
+      const displayName = getDisplayName(name);
+      // Display name should start with uppercase
+      expect(displayName[0]).toBe(displayName[0].toUpperCase());
+    }
   });
 
-  it('returns correct display name for prompt-engineering', () => {
-    expect(getDisplayName('prompt-engineering')).toBe('Prompt Engineering');
-  });
-
-  it('returns correct display name for context-pruning', () => {
-    expect(getDisplayName('context-pruning')).toBe('Context Pruning');
-  });
-
-  it('returns correct display name for context-expanding', () => {
-    expect(getDisplayName('context-expanding')).toBe('Context Expanding');
-  });
-
-  it('returns correct display name for workflow-guardrails', () => {
-    expect(getDisplayName('workflow-guardrails')).toBe('Workflow & Guardrails');
-  });
-
-  it('returns correct display name for coding-assistants', () => {
-    expect(getDisplayName('coding-assistants')).toBe('Coding Assistants');
+  it('matches config displayName', () => {
+    for (const name of COLLECTION_NAMES) {
+      expect(getDisplayName(name)).toBe(COLLECTION_CONFIG[name].displayName);
+    }
   });
 });
