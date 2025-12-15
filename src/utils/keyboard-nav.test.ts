@@ -174,6 +174,35 @@ describe('computeFilterVisibility', () => {
 
     expect(visibility.get(items[0].element)).toBe(true);
   });
+
+  it('fuzzy matches non-consecutive characters', () => {
+    const items = [
+      createNavItem('Context Pruning'),
+      createNavItem('Getting Started'),
+      createNavItem('Advanced Topics'),
+    ];
+
+    // "ctxprn" should fuzzy match "Context Pruning" (c-t-x from context, p-r-n from pruning)
+    const visibility = computeFilterVisibility(items, 'ctxprn');
+
+    expect(visibility.get(items[0].element)).toBe(true);
+    expect(visibility.get(items[1].element)).toBe(false);
+    expect(visibility.get(items[2].element)).toBe(false);
+  });
+
+  it('fuzzy matches with typo-like queries', () => {
+    const items = [
+      createNavItem('Introduction'),
+      createNavItem('Configuration'),
+    ];
+
+    // "intro" matches "Introduction", "config" matches "Configuration"
+    const visibility1 = computeFilterVisibility(items, 'intduc');
+    expect(visibility1.get(items[0].element)).toBe(true);
+
+    const visibility2 = computeFilterVisibility(items, 'confg');
+    expect(visibility2.get(items[1].element)).toBe(true);
+  });
 });
 
 // ============================================================================

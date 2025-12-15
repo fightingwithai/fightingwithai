@@ -7,6 +7,8 @@
  * Designed for potential extraction as a standalone plugin.
  */
 
+import fuzzysort from 'fuzzysort';
+
 // ============================================================================
 // Types & Configuration
 // ============================================================================
@@ -122,7 +124,7 @@ export function isTypingInInput(activeElement: Element | null): boolean {
 }
 
 /**
- * Filter nav items based on a query string
+ * Filter nav items based on a query string using fuzzy matching
  * Returns which items and sections should be visible
  */
 export function computeFilterVisibility(
@@ -130,12 +132,27 @@ export function computeFilterVisibility(
   query: string
 ): Map<HTMLElement, boolean> {
   const visibility = new Map<HTMLElement, boolean>();
-  const normalizedQuery = query.toLowerCase().trim();
+  const normalizedQuery = query.trim();
+
+  // If no query, show everything
+  if (!normalizedQuery) {
+    for (const item of items) {
+      visibility.set(item.element, true);
+    }
+    return visibility;
+  }
+
+  // Use fuzzysort for fuzzy matching
+  const results = fuzzysort.go(normalizedQuery, items, {
+    key: 'title',
+    threshold: -10000, // Allow loose matches
+  });
+
+  // Create a set of matched elements for quick lookup
+  const matchedElements = new Set(results.map((r) => r.obj.element));
 
   for (const item of items) {
-    const isVisible =
-      !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery);
-    visibility.set(item.element, isVisible);
+    visibility.set(item.element, matchedElements.has(item.element));
   }
 
   return visibility;
