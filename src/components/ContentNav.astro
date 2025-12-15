@@ -4,6 +4,7 @@ interface NavItem {
   title: string;
   collection: string;
   sectionName: string;
+  href?: string;
 }
 
 interface Props {
@@ -14,23 +15,27 @@ interface Props {
 
 const { prev, next, currentCollection } = Astro.props;
 
-// Check if navigating to a different section
-const crossingToPrevSection = prev && prev.collection !== currentCollection;
-const crossingToNextSection = next && next.collection !== currentCollection;
+// Build URLs - use href if provided, otherwise construct from collection/slug
+const prevHref = prev?.href ?? (prev ? `/${prev.collection}/${prev.slug}/` : null);
+const nextHref = next?.href ?? (next ? `/${next.collection}/${next.slug}/` : null);
+
+// Check if navigating to a different section (home is always a section crossing)
+const crossingToPrevSection = prev && prev.collection !== currentCollection && prev.collection !== '_home';
+const crossingToNextSection = next && next.collection !== currentCollection && next.collection !== '_home';
 ---
 
 {(prev || next) && (
   <nav class="content-nav" aria-label="Page navigation">
-    {prev ? (
-      <a href={`/${prev.collection}/${prev.slug}/`} class="nav-prev">
-        {crossingToPrevSection && <span class="section-label">{prev.sectionName}</span>}
+    {prev && prevHref ? (
+      <a href={prevHref} class="nav-prev">
         <span class="nav-title">← {prev.title}</span>
+        {crossingToPrevSection && <span class="section-label">{prev.sectionName}</span>}
       </a>
     ) : <span />}
-    {next && (
-      <a href={`/${next.collection}/${next.slug}/`} class="nav-next">
-        {crossingToNextSection && <span class="section-label">{next.sectionName}</span>}
+    {next && nextHref && (
+      <a href={nextHref} class="nav-next">
         <span class="nav-title">{next.title} →</span>
+        {crossingToNextSection && <span class="section-label">{next.sectionName}</span>}
       </a>
     )}
   </nav>
@@ -68,7 +73,7 @@ const crossingToNextSection = next && next.collection !== currentCollection;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wider);
-    margin-bottom: var(--space-1);
+    margin-top: var(--space-1);
   }
 
   .nav-title {
