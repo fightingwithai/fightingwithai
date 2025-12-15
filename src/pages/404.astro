@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import NotFound from "sailkit/packages/lighthouse/NotFound.astro";
 import { getAllCollectionsSorted } from "../utils/collections";
 
 // Build a list of all valid URLs at build time for fuzzy matching
@@ -19,367 +20,46 @@ const collectionIndexes = collections.map((collection) => ({
   section: "Section Index",
 }));
 
-const validPages = [...allPages, ...collectionIndexes, { url: "/", title: "Home", section: "" }];
+const pages = [...allPages, ...collectionIndexes, { url: "/", title: "Home", section: "" }];
 ---
 
 <Layout title="Page Not Found - Fighting With AI">
   <style>
-    .error-container {
-      text-align: center;
-      padding: var(--space-8) 0;
+    /* Override lighthouse default styles with site theme */
+    .lighthouse-container {
+      --lighthouse-accent: var(--color-accent);
+      --lighthouse-text: var(--color-text);
+      --lighthouse-text-muted: var(--color-text-muted);
+      --lighthouse-surface: var(--color-surface);
+      --lighthouse-border: var(--color-border);
+      --lighthouse-accent-dim: var(--color-accent-dim);
     }
 
-    .error-code {
+    .lighthouse-code {
       font-size: var(--text-4xl);
-      font-weight: var(--font-bold);
-      color: var(--color-accent);
-      margin-bottom: var(--space-2);
     }
 
-    .error-title {
+    .lighthouse-title {
       font-size: var(--text-2xl);
-      color: var(--color-text);
-      margin-bottom: var(--space-4);
     }
 
-    .error-description {
-      color: var(--color-text-muted);
-      margin-bottom: var(--space-8);
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .suggestions-container {
-      margin: var(--space-8) auto;
-      max-width: 500px;
-      text-align: left;
-    }
-
-    .suggestions-title {
-      font-size: var(--text-base);
-      color: var(--color-text);
-      margin-bottom: var(--space-4);
-      text-align: center;
-    }
-
-    .suggestion-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .suggestion-item {
-      margin-bottom: var(--space-3);
-    }
-
-    .suggestion-link {
-      display: block;
-      padding: var(--space-3) var(--space-4);
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
+    .lighthouse-suggestion-link {
       border-radius: var(--radius-lg);
-      transition: all var(--transition-base);
     }
 
-    .suggestion-link:hover {
-      border-color: var(--color-accent);
-      background-color: var(--color-accent-dim);
-    }
-
-    .suggestion-title {
-      color: var(--color-accent);
-      font-weight: var(--font-medium);
-      display: block;
-    }
-
-    .suggestion-section {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      margin-top: var(--space-1);
-      display: block;
-    }
-
-    .suggestion-url {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      font-family: var(--font-mono);
-      opacity: 0.7;
-      display: block;
-      margin-top: var(--space-1);
-    }
-
-    .redirect-notice {
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-accent);
+    .lighthouse-redirect {
       border-radius: var(--radius-lg);
-      padding: var(--space-4);
-      margin: var(--space-6) auto;
-      max-width: 500px;
-      text-align: center;
-    }
-
-    .redirect-notice p {
-      margin: 0;
-      color: var(--color-text);
-    }
-
-    .redirect-notice a {
-      color: var(--color-accent);
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--color-border);
-      border-top-color: var(--color-accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: var(--space-2);
-      vertical-align: middle;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .actions {
-      margin-top: var(--space-8);
-      display: flex;
-      gap: var(--space-4);
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .searching-message {
-      color: var(--color-text-muted);
-      text-align: center;
-      padding: var(--space-4);
-    }
-
-    .match-score {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      opacity: 0.6;
-      margin-left: var(--space-2);
     }
   </style>
 
-  <div class="error-container">
-    <div class="error-code">404</div>
-    <h1 class="error-title">Page Not Found</h1>
-    <p class="error-description">
-      The page you're looking for doesn't exist or may have been moved.
-      Content gets reorganized sometimes as this site evolves.
-    </p>
-
-    <div id="redirect-notice" class="redirect-notice hidden">
-      <p>
-        <span class="spinner"></span>
-        Found a match! Redirecting to <a id="redirect-link" href="#">...</a>
-      </p>
-    </div>
-
-    <div id="suggestions-container" class="suggestions-container hidden">
-      <p class="suggestions-title">Did you mean one of these?</p>
-      <ul id="suggestion-list" class="suggestion-list">
-        <!-- Populated by JavaScript -->
-      </ul>
-    </div>
-
-    <div id="searching-message" class="searching-message">
-      <span class="spinner"></span> Looking for similar pages...
-    </div>
-
-    <div class="actions">
+  <NotFound
+    pages={pages}
+    autoRedirectThreshold={0.6}
+    maxSuggestions={5}
+  >
+    <Fragment slot="actions">
       <a href="/" class="btn btn-primary">Go Home</a>
       <a href="/concepts/" class="btn btn-secondary">Browse Concepts</a>
-    </div>
-  </div>
-
-  <script define:vars={{ validPages }}>
-    // Fuzzy matching utilities
-
-    /**
-     * Calculate Levenshtein distance between two strings.
-     * Returns the number of single-character edits needed.
-     */
-    function levenshteinDistance(a, b) {
-      const matrix = Array(b.length + 1).fill(null).map(() =>
-        Array(a.length + 1).fill(null)
-      );
-
-      for (let i = 0; i <= a.length; i++) matrix[0][i] = i;
-      for (let j = 0; j <= b.length; j++) matrix[j][0] = j;
-
-      for (let j = 1; j <= b.length; j++) {
-        for (let i = 1; i <= a.length; i++) {
-          const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
-          matrix[j][i] = Math.min(
-            matrix[j][i - 1] + 1,
-            matrix[j - 1][i] + 1,
-            matrix[j - 1][i - 1] + indicator
-          );
-        }
-      }
-
-      return matrix[b.length][a.length];
-    }
-
-    /**
-     * Calculate similarity score (0-1) using multiple strategies.
-     * Higher is better.
-     */
-    function calculateSimilarity(requestedPath, page) {
-      const pageUrl = page.url.toLowerCase();
-      const pageTitle = page.title.toLowerCase();
-      const requested = requestedPath.toLowerCase();
-
-      // Extract meaningful parts from URL
-      const requestedParts = requested.split('/').filter(Boolean);
-      const pageParts = pageUrl.split('/').filter(Boolean);
-
-      let score = 0;
-
-      // 1. Exact slug match (highest priority) - content moved to different section
-      const requestedSlug = requestedParts[requestedParts.length - 1];
-      const pageSlug = pageParts[pageParts.length - 1];
-      if (requestedSlug && pageSlug && requestedSlug === pageSlug) {
-        score += 0.6; // Strong bonus for exact slug match
-      }
-
-      // 2. Levenshtein-based similarity on URL
-      const maxLen = Math.max(requested.length, pageUrl.length);
-      const levDistance = levenshteinDistance(requested, pageUrl);
-      const levScore = 1 - (levDistance / maxLen);
-      score += levScore * 0.2;
-
-      // 3. Token/word overlap between URL parts and title
-      const requestedTokens = requested.replace(/[/-]/g, ' ').split(/\s+/).filter(Boolean);
-      const titleTokens = pageTitle.split(/\s+/).filter(Boolean);
-      const allPageTokens = [...pageParts, ...titleTokens];
-
-      let tokenMatches = 0;
-      for (const reqToken of requestedTokens) {
-        for (const pageToken of allPageTokens) {
-          if (pageToken.includes(reqToken) || reqToken.includes(pageToken)) {
-            tokenMatches++;
-            break;
-          }
-        }
-      }
-      if (requestedTokens.length > 0) {
-        score += (tokenMatches / requestedTokens.length) * 0.2;
-      }
-
-      // 4. Partial slug containment
-      if (requestedSlug && pageSlug) {
-        if (pageSlug.includes(requestedSlug) || requestedSlug.includes(pageSlug)) {
-          score += 0.1;
-        }
-      }
-
-      return Math.min(score, 1); // Cap at 1
-    }
-
-    /**
-     * Find best matching pages for the current URL.
-     */
-    function findMatches(requestedPath) {
-      const scored = validPages.map(page => ({
-        ...page,
-        score: calculateSimilarity(requestedPath, page)
-      }));
-
-      // Sort by score descending
-      scored.sort((a, b) => b.score - a.score);
-
-      // Filter out very low scores
-      return scored.filter(p => p.score > 0.15);
-    }
-
-    /**
-     * Display suggestions in the UI.
-     */
-    function showSuggestions(matches) {
-      const container = document.getElementById('suggestions-container');
-      const list = document.getElementById('suggestion-list');
-      const searchingMsg = document.getElementById('searching-message');
-
-      searchingMsg?.classList.add('hidden');
-
-      if (matches.length === 0) {
-        return; // No matches, just show default actions
-      }
-
-      list.innerHTML = matches.slice(0, 5).map(match => `
-        <li class="suggestion-item">
-          <a href="${match.url}" class="suggestion-link">
-            <span class="suggestion-title">${match.title}</span>
-            ${match.section ? `<span class="suggestion-section">${match.section}</span>` : ''}
-            <span class="suggestion-url">${match.url}</span>
-          </a>
-        </li>
-      `).join('');
-
-      container?.classList.remove('hidden');
-    }
-
-    /**
-     * Perform auto-redirect with notice.
-     */
-    function autoRedirect(match) {
-      const notice = document.getElementById('redirect-notice');
-      const link = document.getElementById('redirect-link');
-      const searchingMsg = document.getElementById('searching-message');
-
-      searchingMsg?.classList.add('hidden');
-
-      if (link && notice) {
-        link.textContent = match.title;
-        link.href = match.url;
-        notice.classList.remove('hidden');
-
-        // Redirect after a short delay so user can see the message
-        setTimeout(() => {
-          window.location.href = match.url;
-        }, 1500);
-      }
-    }
-
-    // Main logic
-    document.addEventListener('DOMContentLoaded', () => {
-      const currentPath = window.location.pathname;
-
-      // Small delay to show "searching" animation
-      setTimeout(() => {
-        const matches = findMatches(currentPath);
-
-        if (matches.length > 0) {
-          const bestMatch = matches[0];
-
-          // Auto-redirect if:
-          // 1. There's only one match (always redirect)
-          // 2. OR score is high AND clearly better than alternatives
-          const singleMatch = matches.length === 1;
-          const strongMatch = bestMatch.score > 0.6;
-          const clearWinner = matches.length > 1 && matches[0].score > matches[1].score + 0.2;
-
-          if (singleMatch || (strongMatch && clearWinner)) {
-            autoRedirect(bestMatch);
-          } else {
-            showSuggestions(matches);
-          }
-        } else {
-          // Hide searching message, just show default UI
-          document.getElementById('searching-message')?.classList.add('hidden');
-        }
-      }, 300);
-    });
-  </script>
+    </Fragment>
+  </NotFound>
 </Layout>
