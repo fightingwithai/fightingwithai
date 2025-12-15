@@ -12,7 +12,7 @@ import { getCollection } from "astro:content";
 import {
   COLLECTION_NAMES,
   COLLECTION_CONFIG,
-  buildUnifiedNavList,
+  getNavNeighbors,
   resolveRelatedContent,
   type CollectionName,
 } from "../../utils/collections";
@@ -41,12 +41,8 @@ const { entry, collectionName } = Astro.props as {
 const { Content } = await entry.render();
 const isPlaceholder = entry.body.trim().toLowerCase() === "todo";
 
-// Build navigation and resolve related content using helpers
-const allContent = await buildUnifiedNavList();
-const currentIndex = allContent.findIndex(
-  (e) => e.slug === entry.slug && e.collection === collectionName
-);
-const next = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1] : null;
+// Get prev/next navigation using compass
+const { prev, next } = await getNavNeighbors(collectionName, entry.slug);
 
 const relatedItems = await resolveRelatedContent(entry.data.relatesTo || []);
 
@@ -75,6 +71,6 @@ const config = COLLECTION_CONFIG[collectionName];
     )}
 
     <RelatedContent items={relatedItems} />
-    <ContentNav next={next} currentCollection={collectionName} />
+    <ContentNav prev={prev} next={next} currentCollection={collectionName} />
   </article>
 </Layout>
