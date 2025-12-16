@@ -15,6 +15,7 @@ import {
   type NavEntry,
   type RelatedItem,
 } from "./collections-config";
+import { getNeighbors as compassGetNeighbors } from "sailkit/packages/compass/dist/index.js";
 
 // Re-export everything from config for convenience
 export {
@@ -86,12 +87,12 @@ export async function getAllCollectionsSorted(): Promise<CollectionWithEntries[]
 /**
  * Build a unified navigation list across all sections.
  * Used for prev/next navigation that crosses section boundaries.
- * Order is defined by COLLECTION_NAMES.
+ * Order is defined by COLLECTION_NAMES, with home page first.
  */
 export async function buildUnifiedNavList(): Promise<NavEntry[]> {
   const collections = await getAllCollectionsSorted();
 
-  return collections.flatMap(collection =>
+  const contentEntries = collections.flatMap(collection =>
     collection.entries.map(entry => ({
       slug: entry.slug,
       title: entry.data.title,
@@ -99,6 +100,66 @@ export async function buildUnifiedNavList(): Promise<NavEntry[]> {
       sectionName: collection.displayName,
     }))
   );
+
+  // Home page is first in navigation order
+  const homeEntry: NavEntry = {
+    slug: 'index',
+    title: 'Home',
+    collection: '_home',
+    sectionName: '',
+    href: '/',
+  };
+
+  return [homeEntry, ...contentEntries];
+}
+
+/**
+ * Create a nav key for compass navigation.
+ * Format: collection/slug (unique identifier)
+ */
+export function navKey(collection: CollectionName, slug: string): string {
+  return `${collection}/${slug}`;
+}
+
+/**
+ * Parse a nav key back to collection and slug.
+ */
+export function parseNavKey(key: string): { collection: CollectionName; slug: string } {
+  const [collection, ...slugParts] = key.split('/');
+  return {
+    collection: collection as CollectionName,
+    slug: slugParts.join('/'),
+  };
+}
+
+/**
+ * Get prev/next navigation entries for a given page.
+ * Uses compass for the ordering logic.
+ */
+export async function getNavNeighbors(
+  collection: CollectionName | '_home',
+  slug: string
+): Promise<{ prev: NavEntry | null; next: NavEntry | null }> {
+  const navList = await buildUnifiedNavList();
+
+  // Build flat list of nav keys for compass
+  const navKeys = navList.map(entry => navKey(entry.collection, entry.slug));
+
+  // Use compass to find neighbors
+  const currentKey = navKey(collection, slug);
+  const { prev: prevKey, next: nextKey } = compassGetNeighbors(navKeys, currentKey);
+
+  // Map back to full entries
+  const findEntry = (key: string | null): NavEntry | null => {
+    if (!key) return null;
+    const { collection: col, slug: s } = parseNavKey(key);
+    return navList.find(e => e.collection === col && e.slug === s) ?? null;
+  };
+
+  return {
+    prev: findEntry(prevKey),
+    next: findEntry(nextKey),
+  };
 }
 
 /**

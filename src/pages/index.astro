@@ -1,5 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ContentNav from "../components/ContentNav.astro";
+import { getNavNeighbors } from "../utils/collections";
+
+// Get prev/next navigation using compass (home is first, so prev will be null)
+const { prev, next } = await getNavNeighbors('_home', 'index');
 ---
 
 <Layout title="Fighting With AI">
@@ -11,21 +16,6 @@ import Layout from "../layouts/Layout.astro";
       max-width: 600px;
     }
 
-    .home-nav {
-      text-align: right;
-      margin-top: var(--space-8);
-      padding-top: var(--space-4);
-      border-top: 1px solid var(--color-border);
-      font-size: var(--text-sm);
-    }
-
-    .home-nav a {
-      color: var(--color-accent);
-    }
-
-    .home-nav a:hover {
-      color: var(--color-accent-hover);
-    }
   </style>
 
   <div class="home-intro">
@@ -38,8 +28,6 @@ import Layout from "../layouts/Layout.astro";
 
     <p class="lead">This guide does not argue that AI "doesn't work," nor that it should be avoided. It documents where it works, where it breaks, and what to do about it.</p>
 
-    <nav class="home-nav">
-      <a href="/concepts/">Concepts →</a>
-    </nav>
+<ContentNav prev={prev} next={next} currentCollection="_home" />
   </div>
 </Layout>

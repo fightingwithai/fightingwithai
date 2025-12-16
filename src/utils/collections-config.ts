@@ -100,12 +100,14 @@ export function getDisplayName(collection: CollectionName): string {
 
 /**
  * Navigation entry with collection context.
+ * `href` overrides default URL construction (used for home page).
  */
 export interface NavEntry {
   slug: string;
   title: string;
-  collection: CollectionName;
+  collection: CollectionName | '_home';
   sectionName: string;
+  href?: string;
 }
 
 /**
