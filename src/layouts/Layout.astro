@@ -521,6 +521,8 @@ const collections = await getAllCollectionsSorted();
 
       <ThemeToggle class="theme-toggle" />
 
+      <a class="nav-item nav-item-home" href="/">Home</a>
+
       {collections.map((collection) => (
         collection.entries.length > 0 && (
           <>
@@ -596,7 +598,11 @@ const collections = await getAllCollectionsSorted();
       // Highlight current nav item
       const currentPath = window.location.pathname;
       document.querySelectorAll('.nav-item').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        const href = link.getAttribute('href');
+        // Handle trailing slashes: /concepts/foo/ matches /concepts/foo
+        const normalizedPath = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
+        const normalizedHref = href?.endsWith('/') ? href.slice(0, -1) : href;
+        if (normalizedHref === normalizedPath || (href === '/' && currentPath === '/')) {
           link.classList.add('active');
         }
       });
