@@ -2,6 +2,8 @@
 import '../styles/design-system.css';
 import '../styles/theme-dark.css';
 import '../styles/theme-light.css';
+import { initScript } from '@sailkit/lantern/packages/lantern/src/core.ts';
+import ThemeToggle from '@sailkit/lantern/packages/lantern/ThemeToggle.astro';
 import { getAllCollectionsSorted } from '../utils/collections';
 import MobileBreadcrumbs from '../components/MobileBreadcrumbs.astro';
 
@@ -400,14 +402,7 @@ const collections = await getAllCollectionsSorted();
     </style>
   </head>
   <body>
-    <script is:inline>
-      // Theme initialization - runs before paint to prevent flash
-      (function() {
-        const stored = localStorage.getItem('theme');
-        const theme = stored || 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script>
+    <script is:inline set:html={initScript} />
 
     <header class="mobile-header">
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
@@ -425,10 +420,7 @@ const collections = await getAllCollectionsSorted();
       <div class="sidebar-logo"><a href="/">Fighting With AI</a></div>
       <div class="sidebar-tagline">From Vibes to Engineering</div>
 
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
-        <span class="theme-toggle-icon" id="theme-icon">☀️</span>
-        <span id="theme-label">Light</span>
-      </button>
+      <ThemeToggle class="theme-toggle" />
 
       {collections.map((collection) => (
         collection.entries.length > 0 && (
@@ -490,32 +482,6 @@ const collections = await getAllCollectionsSorted();
         }
       });
 
-      // Theme toggle
-      function updateThemeButton(theme) {
-        const icon = document.getElementById('theme-icon');
-        const label = document.getElementById('theme-label');
-        if (icon && label) {
-          if (theme === 'dark') {
-            icon.textContent = '☀️';
-            label.textContent = 'Light';
-          } else {
-            icon.textContent = '🌙';
-            label.textContent = 'Dark';
-          }
-        }
-      }
-
-      // Sync button state on load
-      updateThemeButton(document.documentElement.getAttribute('data-theme') || 'dark');
-
-      // Handle toggle click
-      document.getElementById('theme-toggle')?.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeButton(next);
-      });
     </script>
   </body>
 </html>
