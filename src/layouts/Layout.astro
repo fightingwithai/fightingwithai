@@ -127,6 +127,42 @@ const collections = await getAllCollectionsSorted();
         font-weight: var(--font-medium);
       }
 
+      .nav-item.filter-highlight {
+        background-color: var(--color-accent);
+        color: var(--color-bg);
+      }
+
+      /* Sidebar Filter */
+      .sidebar-filter {
+        margin-bottom: var(--space-4);
+      }
+
+      .sidebar-filter-input {
+        width: 100%;
+        padding: var(--space-2) var(--space-3);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        color: var(--color-text);
+        font-size: var(--text-sm);
+        font-family: inherit;
+        transition: border-color var(--transition-base);
+      }
+
+      .sidebar-filter-input:focus {
+        outline: none;
+        border-color: var(--color-accent);
+      }
+
+      .sidebar-filter-input::placeholder {
+        color: var(--color-text-muted);
+      }
+
+      .nav-item.filter-hidden,
+      .nav-section-title.filter-hidden {
+        display: none;
+      }
+
       /* Main Content Area */
       .main-content {
         flex: 1;
@@ -430,6 +466,17 @@ const collections = await getAllCollectionsSorted();
         <span id="theme-label">Light</span>
       </button>
 
+      <div class="sidebar-filter">
+        <input
+          type="text"
+          id="sidebar-filter-input"
+          class="sidebar-filter-input"
+          placeholder="Filter... (t)"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="nav-list" id="nav-list">
       {collections.map((collection) => (
         collection.entries.length > 0 && (
           <>
@@ -440,6 +487,7 @@ const collections = await getAllCollectionsSorted();
           </>
         )
       ))}
+      </div>
 
     </nav>
 
@@ -447,51 +495,9 @@ const collections = await getAllCollectionsSorted();
       <slot />
     </main>
 
-    <script is:inline>
-      // Mobile menu toggle
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-
-      function openSidebar() {
-        sidebar?.classList.add('open');
-        overlay?.classList.add('visible');
-      }
-
-      function closeSidebar() {
-        sidebar?.classList.remove('open');
-        overlay?.classList.remove('visible');
-      }
-
-      // Toggle sidebar with hamburger button
-      document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
-        if (sidebar?.classList.contains('open')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      // Close sidebar - close button
-      document.getElementById('sidebar-close')?.addEventListener('click', closeSidebar);
-
-      // Close sidebar when clicking overlay
-      overlay?.addEventListener('click', closeSidebar);
-
-      // Close sidebar when clicking nav items (on mobile)
-      document.querySelectorAll('.nav-item').forEach(link => {
-        link.addEventListener('click', closeSidebar);
-      });
-
-      // Highlight current nav item
-      const currentPath = window.location.pathname;
-      document.querySelectorAll('.nav-item').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-        }
-      });
-
-      // Theme toggle
-      function updateThemeButton(theme) {
+    <script>
+      // Theme toggle (needs to be separate for theme button UI sync)
+      function updateThemeButton(theme: string) {
         const icon = document.getElementById('theme-icon');
         const label = document.getElementById('theme-label');
         if (icon && label) {
@@ -516,6 +522,10 @@ const collections = await getAllCollectionsSorted();
         localStorage.setItem('theme', next);
         updateThemeButton(next);
       });
+
+      // Initialize keyboard navigation
+      import { initKeyboardNav } from '../utils/keyboard-nav';
+      initKeyboardNav();
     </script>
   </body>
 </html>
