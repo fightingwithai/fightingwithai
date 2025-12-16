@@ -356,17 +356,33 @@ const collections = await getAllCollectionsSorted();
           z-index: var(--z-sticky);
         }
 
-        .mobile-menu-btn {
+        .sidebar-toggle-btn {
           display: flex;
           align-items: center;
-          justify-content: center;
-          background: none;
-          border: none;
-          color: var(--color-text);
+          gap: var(--space-2);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          color: var(--color-text-muted);
           cursor: pointer;
-          padding: var(--space-2);
-          margin: calc(-1 * var(--space-2));
-          font-size: var(--text-lg);
+          padding: var(--space-1) var(--space-2);
+          font-size: var(--text-sm);
+          font-family: var(--font-mono);
+          transition: all var(--transition-base);
+        }
+
+        .sidebar-toggle-btn:hover,
+        .sidebar-toggle-btn:active {
+          border-color: var(--color-accent);
+          color: var(--color-accent);
+        }
+
+        .sidebar-toggle-btn kbd {
+          background: var(--color-bg);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          padding: 0 var(--space-1);
+          font-size: var(--text-xs);
         }
 
         .mobile-header-title {
@@ -485,7 +501,10 @@ const collections = await getAllCollectionsSorted();
     <script is:inline set:html={initScript} />
 
     <header class="mobile-header">
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle topics">
+        <span class="sidebar-toggle-label">Topics</span>
+        <kbd>t</kbd>
+      </button>
       <MobileBreadcrumbs
         currentSection={currentSection}
         currentSectionSlug={currentSectionSlug}
@@ -535,7 +554,7 @@ const collections = await getAllCollectionsSorted();
     </main>
 
     <script is:inline>
-      // Mobile menu toggle
+      // Sidebar toggle
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('sidebar-overlay');
 
@@ -549,14 +568,19 @@ const collections = await getAllCollectionsSorted();
         overlay?.classList.remove('visible');
       }
 
-      // Toggle sidebar with hamburger button
-      document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+      function toggleSidebar() {
         if (sidebar?.classList.contains('open')) {
           closeSidebar();
         } else {
           openSidebar();
         }
-      });
+      }
+
+      // Toggle sidebar with button
+      document.getElementById('sidebar-toggle-btn')?.addEventListener('click', toggleSidebar);
+
+      // Listen for Teleport keyboard event
+      document.addEventListener('teleport:toggle-sidebar', toggleSidebar);
 
       // Close sidebar - close button
       document.getElementById('sidebar-close')?.addEventListener('click', closeSidebar);
@@ -581,7 +605,6 @@ const collections = await getAllCollectionsSorted();
 
     <Teleport
       itemSelector=".nav-item"
-      contentSelector=".main-content"
       sidebarSelector=".sidebar"
     />
   </body>
