@@ -11,12 +11,12 @@ npm run dev
 
 ## Dependencies
 
-### Sailkit
+### Bearing Dev
 
-This project uses [sailkit](https://github.com/joshribakoff/sailkit) installed directly from GitHub. The `dist/` folder is gitignored in that repo, so a `postinstall` script builds it automatically after `npm install`.
+This project uses [bearing-dev](https://github.com/bearing-dev/bearing-dev) installed directly from GitHub. The `dist/` folder is gitignored in that repo, so a `postinstall` script builds it automatically after `npm install`.
 
-If you still see build errors related to sailkit/compass, run manually:
+If you still see build errors related to bearing-dev, run manually:
 
 ```bash
-cd node_modules/sailkit && npm run build
+cd node_modules/bearing-dev && npm run build
 ```

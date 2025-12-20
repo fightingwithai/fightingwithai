@@ -11,9 +11,10 @@ interface Props {
   prev: NavItem | null;
   next: NavItem | null;
   currentCollection: string;
+  position?: 'top' | 'bottom';
 }
 
-const { prev, next, currentCollection } = Astro.props;
+const { prev, next, currentCollection, position = 'bottom' } = Astro.props;
 
 // Build URLs - use href if provided, otherwise construct from collection/slug
 const prevHref = prev?.href ?? (prev ? `/${prev.collection}/${prev.slug}/` : null);
@@ -25,17 +26,19 @@ const crossingToNextSection = next && next.collection !== currentCollection && n
 ---
 
 {(prev || next) && (
-  <nav class="content-nav" aria-label="Page navigation">
+  <nav class={`content-nav content-nav--${position}`} aria-label="Page navigation">
     {prev && prevHref ? (
       <a href={prevHref} class="nav-prev">
         <span class="nav-title">← {prev.title}</span>
         {crossingToPrevSection && <span class="section-label">{prev.sectionName}</span>}
+        <span class="keyboard-hint"><kbd>h</kbd></span>
       </a>
     ) : <span />}
     {next && nextHref && (
       <a href={nextHref} class="nav-next">
         <span class="nav-title">{next.title} →</span>
         {crossingToNextSection && <span class="section-label">{next.sectionName}</span>}
+        <span class="keyboard-hint"><kbd>l</kbd></span>
       </a>
     )}
   </nav>
@@ -46,10 +49,19 @@ const crossingToNextSection = next && next.collection !== currentCollection && n
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    font-size: var(--text-sm);
+  }
+
+  .content-nav--bottom {
     padding-top: var(--space-4);
     margin-top: var(--space-6);
     border-top: 1px solid var(--color-border);
-    font-size: var(--text-sm);
+  }
+
+  .content-nav--top {
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .nav-prev,
@@ -78,5 +90,21 @@ const crossingToNextSection = next && next.collection !== currentCollection && n
 
   .nav-title {
     display: block;
+  }
+
+  .keyboard-hint {
+    display: block;
+    margin-top: var(--space-1);
+  }
+
+  .keyboard-hint kbd {
+    display: inline-block;
+    padding: 0.1em 0.4em;
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
   }
 </style>

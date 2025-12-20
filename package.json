@@ -10,16 +10,15 @@
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
     "prepare": "husky",
-    "postinstall": "cd node_modules/sailkit && npm run build"
+    "postinstall": "cd node_modules/bearing-dev && npm install && npm run build"
   },
   "lint-staged": {
     "*.{astro,mdx,md,html,jsx,tsx}": "npm run lint:assets"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
-    "@sailkit/lantern": "github:joshribakoff/sailkit?path=packages/lantern#main",
     "astro": "^5.0.0",
-    "sailkit": "github:joshribakoff/sailkit#main"
+    "bearing-dev": "github:bearing-dev/bearing-dev#main"
   },
   "devDependencies": {
     "glob": "^11.0.0",
