@@ -15,7 +15,7 @@ An agent runs in a loop:
 4. Tool output becomes part of the context
 5. Repeat until complete
 
-Each iteration extends the [context](/concepts/context). The context accumulates information about your codebase, file states, and previous attempts.
+Each iteration extends the [[context]]. The context accumulates information about your codebase, file states, and previous attempts.
 
 ## Why Tools Matter
 

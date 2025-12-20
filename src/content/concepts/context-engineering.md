@@ -3,7 +3,7 @@ title: Context Engineering
 dependsOn: large-language-models
 ---
 
-A school of thought emphasizing understanding and quality. Practitioners care about architecture, read AI output carefully, and craft what goes into the [context window](/concepts/context)—system prompts, examples, constraints.
+A school of thought emphasizing understanding and quality. Practitioners care about architecture, read AI output carefully, and craft what goes into the [[context|context window]]—system prompts, examples, constraints.
 
 ## Example: Fixing a Layout Bug
 
@@ -23,4 +23,4 @@ You've done the diagnostic work. The AI receives mechanical instructions rather 
 
 This approach takes more upfront effort. You need to understand your codebase and investigate issues yourself. But you get predictable results and maintain control over the solution.
 
-Often contrasted with [vibe coding](/concepts/vibe-coding), but they're not mutually exclusive. Some people switch between modes depending on the task.
+Often contrasted with [[vibe-coding]], but they're not mutually exclusive. Some people switch between modes depending on the task.

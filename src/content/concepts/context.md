@@ -7,14 +7,14 @@ The context window is finite. Everything the AI knows about your conversation ha
 
 ## What's in the Context Window?
 
-- [System prompt](/patterns/system-prompts)
-- [Tools](/concepts/tools) (file ops, terminal, LSP, search)
+- [[system-prompts|System prompt]]
+- [[tools]] (file ops, terminal, LSP, search)
 - MCP servers you've connected
-- [Skills](/patterns/skills) loaded on startup
+- [[skills]] loaded on startup
 - Conversation history (messages, tool calls, results)
 
 ## Why This Matters
 
-As context fills up, signal competes with noise. Important details get buried. See [context collapse](/failure-modes/context-collapse).
+As context fills up, signal competes with noise. Important details get buried. See [[context-collapse]].
 
-Context from one domain can also contaminate another. See [context contamination](/failure-modes/context-contamination).
+Context from one domain can also contaminate another. See [[context-contamination]].
