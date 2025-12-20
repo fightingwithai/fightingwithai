@@ -8,7 +8,7 @@ The context window is finite. Everything the AI knows about your conversation ha
 ## What's in the Context Window?
 
 - [[system-prompts|System prompt]]
-- [[tools]] (file ops, terminal, LSP, search)
+- [[tool-calling|Tools]] (file ops, terminal, LSP, search)
 - MCP servers you've connected
 - [[skills]] loaded on startup
 - Conversation history (messages, tool calls, results)
