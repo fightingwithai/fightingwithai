@@ -18,7 +18,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "astro": "^5.0.0",
-    "bearing-dev": "file:../bearing-dev"
+    "bearing-dev": "github:bearing-dev/bearing-dev#main"
   },
   "devDependencies": {
     "glob": "^11.0.0",
