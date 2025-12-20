@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import { remarkMagicLinks } from '@sailkit/atlas';
+import { remarkMagicLinks } from '@bearing-dev/atlas';
 
 export default defineConfig({
   integrations: [mdx()],

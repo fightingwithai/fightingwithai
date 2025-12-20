@@ -15,7 +15,7 @@ import {
   type NavEntry,
   type RelatedItem,
 } from "./collections-config";
-import { getNeighbors as compassGetNeighbors } from "sailkit/packages/compass/dist/index.js";
+import { getNeighbors as compassGetNeighbors } from "@bearing-dev/compass";
 
 // Re-export everything from config for convenience
 export {
