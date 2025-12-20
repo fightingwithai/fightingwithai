@@ -2,6 +2,9 @@
 import '../styles/design-system.css';
 import '../styles/theme-dark.css';
 import '../styles/theme-light.css';
+import { initScript } from 'bearing-dev/packages/lantern';
+import ThemeToggle from 'bearing-dev/packages/lantern/ThemeToggle.astro';
+import Teleport from 'bearing-dev/packages/teleport/Teleport.astro';
 import { getAllCollectionsSorted } from '../utils/collections';
 import MobileBreadcrumbs from '../components/MobileBreadcrumbs.astro';
 
@@ -47,6 +50,8 @@ const collections = await getAllCollectionsSorted();
         position: fixed;
         height: 100vh;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
       }
 
       .sidebar-logo {
@@ -127,6 +132,45 @@ const collections = await getAllCollectionsSorted();
         font-weight: var(--font-medium);
       }
 
+      /* Keybindings Legend */
+      .keybindings-legend {
+        margin-top: auto;
+        padding-top: var(--space-6);
+        border-top: 1px solid var(--color-border);
+      }
+
+      .keybindings-title {
+        font-size: var(--text-xs);
+        font-weight: var(--font-semibold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-2);
+      }
+
+      .keybinding {
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-1);
+      }
+
+      .keybinding kbd {
+        display: inline-block;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        padding: 0 var(--space-1);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        margin-right: var(--space-1);
+      }
+
+      @media (max-width: 768px) {
+        .keybindings-legend {
+          display: none;
+        }
+      }
+
       /* Main Content Area */
       .main-content {
         flex: 1;
@@ -134,6 +178,44 @@ const collections = await getAllCollectionsSorted();
         margin-left: var(--sidebar-width);
         padding: var(--space-12) var(--space-16);
         max-width: calc(var(--content-max-width) + var(--space-16) * 2);
+      }
+
+      /* Keybindings Header Bar */
+      .keybindings-bar {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-6);
+        padding-bottom: var(--space-4);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .keybindings-bar .kb-group {
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+      }
+
+      .keybindings-bar kbd {
+        display: inline-block;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        padding: 0 var(--space-1);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+      }
+
+      .keybindings-bar .kb-label {
+        margin-left: var(--space-1);
+      }
+
+      @media (max-width: 768px) {
+        .keybindings-bar {
+          display: none;
+        }
       }
 
       .main-content h1 {
@@ -274,17 +356,33 @@ const collections = await getAllCollectionsSorted();
           z-index: var(--z-sticky);
         }
 
-        .mobile-menu-btn {
+        .sidebar-toggle-btn {
           display: flex;
           align-items: center;
-          justify-content: center;
-          background: none;
-          border: none;
-          color: var(--color-text);
+          gap: var(--space-2);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          color: var(--color-text-muted);
           cursor: pointer;
-          padding: var(--space-2);
-          margin: calc(-1 * var(--space-2));
-          font-size: var(--text-lg);
+          padding: var(--space-1) var(--space-2);
+          font-size: var(--text-sm);
+          font-family: var(--font-mono);
+          transition: all var(--transition-base);
+        }
+
+        .sidebar-toggle-btn:hover,
+        .sidebar-toggle-btn:active {
+          border-color: var(--color-accent);
+          color: var(--color-accent);
+        }
+
+        .sidebar-toggle-btn kbd {
+          background: var(--color-bg);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-sm);
+          padding: 0 var(--space-1);
+          font-size: var(--text-xs);
         }
 
         .mobile-header-title {
@@ -400,17 +498,13 @@ const collections = await getAllCollectionsSorted();
     </style>
   </head>
   <body>
-    <script is:inline>
-      // Theme initialization - runs before paint to prevent flash
-      (function() {
-        const stored = localStorage.getItem('theme');
-        const theme = stored || 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script>
+    <script is:inline set:html={initScript} />
 
     <header class="mobile-header">
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+      <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" aria-label="Toggle topics">
+        <span class="sidebar-toggle-label">Topics</span>
+        <kbd>t</kbd>
+      </button>
       <MobileBreadcrumbs
         currentSection={currentSection}
         currentSectionSlug={currentSectionSlug}
@@ -425,10 +519,9 @@ const collections = await getAllCollectionsSorted();
       <div class="sidebar-logo"><a href="/">Fighting With AI</a></div>
       <div class="sidebar-tagline">From Vibes to Engineering</div>
 
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
-        <span class="theme-toggle-icon" id="theme-icon">☀️</span>
-        <span id="theme-label">Light</span>
-      </button>
+      <ThemeToggle class="theme-toggle" />
+
+      <a class="nav-item nav-item-home" href="/">Home</a>
 
       {collections.map((collection) => (
         collection.entries.length > 0 && (
@@ -441,14 +534,29 @@ const collections = await getAllCollectionsSorted();
         )
       ))}
 
+      <div class="keybindings-legend">
+        <div class="keybindings-title">Keyboard</div>
+        <div class="keybinding"><kbd>j</kbd><kbd>k</kbd> navigate</div>
+        <div class="keybinding"><kbd>Enter</kbd> open</div>
+        <div class="keybinding"><kbd>gg</kbd> scroll top</div>
+        <div class="keybinding"><kbd>G</kbd> scroll bottom</div>
+      </div>
+
     </nav>
 
     <main class="main-content">
+      <div class="keybindings-bar">
+        <span class="kb-group"><kbd>j</kbd><kbd>k</kbd><span class="kb-label">navigate</span></span>
+        <span class="kb-group"><kbd>Enter</kbd><span class="kb-label">open</span></span>
+        <span class="kb-group"><kbd>Ctrl+d</kbd><kbd>Ctrl+u</kbd><span class="kb-label">scroll</span></span>
+        <span class="kb-group"><kbd>gg</kbd><span class="kb-label">scroll top</span></span>
+        <span class="kb-group"><kbd>G</kbd><span class="kb-label">scroll bottom</span></span>
+      </div>
       <slot />
     </main>
 
     <script is:inline>
-      // Mobile menu toggle
+      // Sidebar toggle
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('sidebar-overlay');
 
@@ -462,14 +570,19 @@ const collections = await getAllCollectionsSorted();
         overlay?.classList.remove('visible');
       }
 
-      // Toggle sidebar with hamburger button
-      document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+      function toggleSidebar() {
         if (sidebar?.classList.contains('open')) {
           closeSidebar();
         } else {
           openSidebar();
         }
-      });
+      }
+
+      // Toggle sidebar with button
+      document.getElementById('sidebar-toggle-btn')?.addEventListener('click', toggleSidebar);
+
+      // Listen for Teleport keyboard event
+      document.addEventListener('teleport:toggle-sidebar', toggleSidebar);
 
       // Close sidebar - close button
       document.getElementById('sidebar-close')?.addEventListener('click', closeSidebar);
@@ -485,37 +598,20 @@ const collections = await getAllCollectionsSorted();
       // Highlight current nav item
       const currentPath = window.location.pathname;
       document.querySelectorAll('.nav-item').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        const href = link.getAttribute('href');
+        // Handle trailing slashes: /concepts/foo/ matches /concepts/foo
+        const normalizedPath = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
+        const normalizedHref = href?.endsWith('/') ? href.slice(0, -1) : href;
+        if (normalizedHref === normalizedPath || (href === '/' && currentPath === '/')) {
           link.classList.add('active');
         }
       });
 
-      // Theme toggle
-      function updateThemeButton(theme) {
-        const icon = document.getElementById('theme-icon');
-        const label = document.getElementById('theme-label');
-        if (icon && label) {
-          if (theme === 'dark') {
-            icon.textContent = '☀️';
-            label.textContent = 'Light';
-          } else {
-            icon.textContent = '🌙';
-            label.textContent = 'Dark';
-          }
-        }
-      }
-
-      // Sync button state on load
-      updateThemeButton(document.documentElement.getAttribute('data-theme') || 'dark');
-
-      // Handle toggle click
-      document.getElementById('theme-toggle')?.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeButton(next);
-      });
     </script>
+
+    <Teleport
+      itemSelector=".nav-item"
+      sidebarSelector=".sidebar"
+    />
   </body>
 </html>

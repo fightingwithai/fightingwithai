@@ -267,6 +267,12 @@ kbd {
   outline-offset: 2px;
 }
 
+/* Teleport keyboard navigation highlight */
+.teleport-highlight {
+  background-color: var(--color-accent-dim);
+  color: var(--color-accent);
+}
+
 /* ============================================
    UTILITY CLASSES
    ============================================ */

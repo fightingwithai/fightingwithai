@@ -10,7 +10,7 @@
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
     "prepare": "husky",
-    "postinstall": "cd node_modules/bearing-dev && npm install && npm run build && cd ../.. && mkdir -p node_modules/@bearing-dev && ln -sf ../bearing-dev/packages/atlas node_modules/@bearing-dev/atlas && ln -sf ../bearing-dev/packages/compass node_modules/@bearing-dev/compass"
+    "postinstall": "cd node_modules/bearing-dev && npm install --include=dev && npm run build && cd ../.. && mkdir -p node_modules/@bearing-dev && ln -sf ../bearing-dev/packages/atlas node_modules/@bearing-dev/atlas && ln -sf ../bearing-dev/packages/compass node_modules/@bearing-dev/compass && ln -sf ../bearing-dev/packages/lantern node_modules/@bearing-dev/lantern && ln -sf ../bearing-dev/packages/teleport node_modules/@bearing-dev/teleport"
   },
   "lint-staged": {
     "*.{astro,mdx,md,html,jsx,tsx}": "npm run lint:assets"

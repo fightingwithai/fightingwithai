@@ -57,6 +57,7 @@ const config = COLLECTION_CONFIG[collectionName];
 >
   <article>
     <Breadcrumbs collection={collectionName} title={entry.data.title} />
+    <ContentNav prev={prev} next={next} currentCollection={collectionName} position="top" />
 
     <h1>{entry.data.title}</h1>
 
@@ -71,6 +72,6 @@ const config = COLLECTION_CONFIG[collectionName];
     )}
 
     <RelatedContent items={relatedItems} />
-    <ContentNav prev={prev} next={next} currentCollection={collectionName} />
+    <ContentNav prev={prev} next={next} currentCollection={collectionName} position="bottom" />
   </article>
 </Layout>
