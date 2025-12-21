@@ -5,6 +5,8 @@ import '../styles/theme-light.css';
 import { initScript } from '@bearing-dev/lantern';
 import ThemeToggle from '@bearing-dev/lantern/ThemeToggle.astro';
 import Teleport from '@bearing-dev/teleport/Teleport.astro';
+import { DEFAULT_BINDINGS } from '@bearing-dev/teleport';
+import KbdLegend from '@bearing-dev/kbd-hints/KbdLegend.astro';
 import { getAllCollectionsSorted } from '../utils/collections';
 import MobileBreadcrumbs from '../components/MobileBreadcrumbs.astro';
 
@@ -534,24 +536,12 @@ const collections = await getAllCollectionsSorted();
         )
       ))}
 
-      <div class="keybindings-legend">
-        <div class="keybindings-title">Keyboard</div>
-        <div class="keybinding"><kbd>j</kbd><kbd>k</kbd> navigate</div>
-        <div class="keybinding"><kbd>Enter</kbd> open</div>
-        <div class="keybinding"><kbd>gg</kbd> scroll top</div>
-        <div class="keybinding"><kbd>G</kbd> scroll bottom</div>
-      </div>
+<KbdLegend bindings={DEFAULT_BINDINGS} class="keybindings-legend" />
 
     </nav>
 
     <main class="main-content">
-      <div class="keybindings-bar">
-        <span class="kb-group"><kbd>j</kbd><kbd>k</kbd><span class="kb-label">navigate</span></span>
-        <span class="kb-group"><kbd>Enter</kbd><span class="kb-label">open</span></span>
-        <span class="kb-group"><kbd>Ctrl+d</kbd><kbd>Ctrl+u</kbd><span class="kb-label">scroll</span></span>
-        <span class="kb-group"><kbd>gg</kbd><span class="kb-label">scroll top</span></span>
-        <span class="kb-group"><kbd>G</kbd><span class="kb-label">scroll bottom</span></span>
-      </div>
+<KbdLegend bindings={DEFAULT_BINDINGS} layout="compact" class="keybindings-bar" />
       <slot />
     </main>
 

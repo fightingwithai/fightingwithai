@@ -10,7 +10,7 @@
     "test:watch": "vitest",
     "lint:assets": "npx tsx scripts/lint-assets.ts",
     "prepare": "husky",
-    "postinstall": "cd node_modules/bearing-dev && npm install --include=dev && npm run build && cd ../.. && mkdir -p node_modules/@bearing-dev && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/atlas\" node_modules/@bearing-dev/atlas && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/compass\" node_modules/@bearing-dev/compass && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/lantern\" node_modules/@bearing-dev/lantern && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/teleport\" node_modules/@bearing-dev/teleport"
+    "postinstall": "cd node_modules/bearing-dev && npm install --include=dev && npm run build && cd ../.. && mkdir -p node_modules/@bearing-dev && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/atlas\" node_modules/@bearing-dev/atlas && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/compass\" node_modules/@bearing-dev/compass && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/lantern\" node_modules/@bearing-dev/lantern && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/teleport\" node_modules/@bearing-dev/teleport && ln -sf \"$(pwd)/node_modules/bearing-dev/packages/kbd-hints\" node_modules/@bearing-dev/kbd-hints"
   },
   "lint-staged": {
     "*.{astro,mdx,md,html,jsx,tsx}": "npm run lint:assets"
@@ -18,7 +18,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "astro": "^5.0.0",
-    "bearing-dev": "github:bearing-dev/bearing-dev#atlas-magic-links"
+    "bearing-dev": "github:sailkit-dev/sailkit#kbd-hints"
   },
   "devDependencies": {
     "glob": "^11.0.0",
