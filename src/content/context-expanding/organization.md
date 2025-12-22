@@ -36,6 +36,17 @@ For project plans and longer-term context, consider where files should live:
 
 Some teams keep a top-level `plans/` folder in their projects directory for cross-project planning, with subfolders per project.
 
+## Namespacing
+
+When you accumulate many prompts, naming conventions help you find them. Prefix related prompts with a namespace:
+
+- `skill.review`, `skill.commit`, `skill.refactor`
+- `seed.architecture`, `seed.conventions`, `seed.codebase`
+
+When tools list prompts alphabetically—or when you're browsing a folder—everything in the same namespace groups together. You immediately see all your context-seeding commands or all your skill-related prompts.
+
+This matters especially when running tools that don't auto-load skills, or when you want to explicitly invoke them. A consistent naming scheme turns a pile of prompts into an organized system.
+
 ## The Pattern
 
-Centralize AI instructions in a vendor-agnostic location. Use symlinks to expose them to specific tools. Keep plans where they make sense for your workflow.
+Centralize AI instructions in a vendor-agnostic location. Use symlinks to expose them to specific tools. Namespace prompts so related commands cluster together. Keep plans where they make sense for your workflow.
