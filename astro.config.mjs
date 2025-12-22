@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import { remarkMagicLinks } from '@bearing-dev/atlas';
+import { remarkMagicLinks } from 'sailkit/packages/atlas';
 import { createSlugResolver } from './src/utils/slug-resolver.ts';
 
 const urlBuilder = createSlugResolver('./src/content');
