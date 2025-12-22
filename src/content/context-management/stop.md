@@ -15,13 +15,13 @@ Interrupt generation before the AI finishes. The partial output stays in context
 
 ## Stop vs. Rewind
 
-Stop prevents bad context from forming. [Rewind](/context-management/rewinding) removes bad context after the fact.
+Stop prevents bad context from forming. [[rewinding|Rewind]] removes bad context after the fact.
 
 Stopping is faster—you intervene in real-time. But you have to be watching. Rewinding works when you notice the problem later.
 
 ## Stop and Steer
 
-Stop pairs naturally with [steering](/workflow-guardrails/steering). Stop halts the wrong direction. Steering redirects toward the right one.
+Stop pairs naturally with [[steering]]. Stop halts the wrong direction. Steering redirects toward the right one.
 
 The sequence: stop generation, then send a follow-up message that clarifies what you actually want. The AI resumes with your correction as the most recent context.
 
@@ -32,7 +32,7 @@ Without the stop, your steering message competes with whatever the AI just produ
 When you stop mid-generation, you get a partial response. This might be:
 
 - **Usable as-is** - You stopped at the right moment
-- **Incomplete but salvageable** - Copy what you need, then [clear](/context-management/clear) or [rewind](/context-management/rewinding)
+- **Incomplete but salvageable** - Copy what you need, then [[clear]] or [[rewinding|rewind]]
 - **Garbage** - Rewind to before the partial output
 
 The partial output is now in context either way. If it's not useful, remove it.
