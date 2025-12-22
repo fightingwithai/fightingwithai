@@ -4,7 +4,7 @@ relatesTo:
   - context-collapse
 ---
 
-The AI applies [context](/concepts/context) from one domain where it doesn't belong.
+The AI applies [[context]] from one domain where it doesn't belong.
 
 ## Symptoms
 
@@ -21,7 +21,7 @@ The AI doesn't know what to forget. It sees the full conversation and draws conn
 
 ## Example: Batch Writing Articles
 
-It's tempting to write articles one after another in a chain. You're in the zone. Clearing context and reloading [skills](/context-expanding/skills) for each piece feels like friction.
+It's tempting to write articles one after another in a chain. You're in the zone. Clearing context and reloading [[skills]] for each piece feels like friction.
 
 But articles written this way tend to blur. They cluster by *when* you wrote them, not by *what* they cover. An article about testing might accidentally echo language from the authentication article you wrote 20 minutes earlier.
 

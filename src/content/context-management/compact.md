@@ -3,7 +3,7 @@ title: Compact
 dependsOn: clear
 ---
 
-[Clearing](/context-management/clear) loses everything. Compacting preserves a summary.
+[[clear|Clearing]] loses everything. Compacting preserves a summary.
 
 ## How It Works
 
