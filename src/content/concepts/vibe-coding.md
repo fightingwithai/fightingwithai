@@ -32,4 +32,4 @@ Vibe coding isn't wrong—it's a trade-off. It works well when:
 
 The risk is accumulating fixes-on-fixes that you don't fully understand.
 
-Often contrasted with [context engineering](/concepts/context-engineering), but they're not mutually exclusive. Some people switch between modes depending on the task.
+Often contrasted with [[context-engineering|context engineering]], but they're not mutually exclusive. Some people switch between modes depending on the task.
