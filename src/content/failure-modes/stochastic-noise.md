@@ -21,7 +21,7 @@ LLMs sample from probability distributions. When uncertain, they don't pause—t
 
 ## The Damage
 
-Every speculative action adds to the context. Code changes pile up. Files multiply. The original problem gets buried under "attempts." Even if individual actions are harmless, the cumulative noise causes [[context-collapse]].
+Every speculative action adds to the context. Code changes pile up. Files multiply. The original problem gets buried under "attempts." Even if individual actions are harmless, the cumulative noise causes [[context-collapse|context collapse]].
 
 ## Mitigation
 

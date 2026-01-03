@@ -23,4 +23,4 @@ You've done the diagnostic work. The AI receives mechanical instructions rather 
 
 This approach takes more upfront effort. You need to understand your codebase and investigate issues yourself. But you get predictable results and maintain control over the solution.
 
-Often contrasted with [[vibe-coding]], but they're not mutually exclusive. Some people switch between modes depending on the task.
+Often contrasted with [[vibe-coding|vibe coding]], but they're not mutually exclusive. Some people switch between modes depending on the task.

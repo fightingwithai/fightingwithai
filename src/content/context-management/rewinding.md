@@ -30,9 +30,9 @@ Source control provides another layer. If changes were already written to files,
 
 ## Rewind vs. Stop vs. Clear
 
-[[stop]] prevents bad context from forming. Rewinding removes it after the fact.
+[[stop|Stop]] prevents bad context from forming. Rewinding removes it after the fact.
 
-[[clear]] starts fresh. You lose everything.
+[[clear|Clear]] starts fresh. You lose everything.
 
 Rewinding keeps good context and removes bad context. You preserve the useful setup work while discarding the wrong turn.
 

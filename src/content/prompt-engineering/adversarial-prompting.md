@@ -18,6 +18,6 @@ The key is removing collaborative framing. When you clear context and prompt wit
 ## The Pattern
 
 1. Complete the initial work (write code, generate tests, etc.)
-2. [[clear]] the context or switch models
+2. [[clear|Clear]] the context or switch models
 3. Prompt with an adversarial frame ("find issues", "break this", "what would fail")
 4. Use the critical output to improve the original work

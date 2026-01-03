@@ -20,4 +20,4 @@ Each exchange extends the [[context]]. The model sees the full conversation hist
 
 Chat generates text—code snippets, explanations, suggestions. It doesn't act on your environment. You copy the code, paste it into your editor, and run commands yourself.
 
-[[agent-loops]] add the ability to take actions: reading files, writing changes, running commands. Chat stays in the realm of text.
+[[agent-loops|Agent loops]] add the ability to take actions: reading files, writing changes, running commands. Chat stays in the realm of text.

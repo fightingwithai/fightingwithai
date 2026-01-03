@@ -15,6 +15,6 @@ The context window is finite. Everything the AI knows about your conversation ha
 
 ## Why This Matters
 
-As context fills up, signal competes with noise. Important details get buried. See [[context-collapse]].
+As context fills up, signal competes with noise. Important details get buried. See [[context-collapse|context collapse]].
 
-Context from one domain can also contaminate another. See [[context-contamination]].
+Context from one domain can also contaminate another. See [[context-contamination|context contamination]].
