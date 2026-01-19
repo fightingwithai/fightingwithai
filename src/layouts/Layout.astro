@@ -495,6 +495,39 @@ const collections = await getAllCollectionsSorted();
           display: none;
         }
       }
+
+      /* Footer */
+      .site-footer {
+        margin-left: var(--sidebar-width);
+        padding: var(--space-8) var(--space-16);
+        border-top: 1px solid var(--color-border);
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-4);
+      }
+
+      .site-footer a {
+        color: var(--color-text-muted);
+        text-decoration: none;
+        transition: color var(--transition-base);
+      }
+
+      .site-footer a:hover {
+        color: var(--color-accent);
+      }
+
+      @media (max-width: 768px) {
+        .site-footer {
+          margin-left: 0;
+          padding: var(--space-6) var(--space-4);
+          flex-direction: column;
+          gap: var(--space-2);
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body>
@@ -554,6 +587,11 @@ const collections = await getAllCollectionsSorted();
       </div>
       <slot />
     </main>
+
+    <footer class="site-footer">
+      <span>Made by <a href="https://joshribakoff.com">Josh Ribakoff</a></span>
+      <a href="https://github.com/fightingwithai/fightingwithai">View on GitHub</a>
+    </footer>
 
     <script is:inline>
       // Sidebar toggle
