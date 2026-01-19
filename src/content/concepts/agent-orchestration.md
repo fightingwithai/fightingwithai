@@ -103,25 +103,26 @@ This mirrors traditional org design. The planner thinks, the workers execute, th
 
 Cursor uses this architecture for long-running agents. The planner maintains context about the full codebase; workers operate with narrow focus.
 
-## Scratchpad Pattern
+## Persistent Planning Documents
 
 Context windows truncate. Instructions get lost. The agent "forgets" what the planner said three iterations ago.
 
-The scratchpad solves this: a shared document that persists outside the context window.
+A shared planning document solves this: a file that persists outside the context window.
 
 - Planners write instructions, findings, and decisions
 - Workers read current state before acting
 - Results, bugs, and progress get logged back
 - Context resets don't lose institutional knowledge
 
-Even when the conversation refreshes, agents reference the scratchpad to restore context. It's a persistent notebook that survives token limits.
+Even when the conversation refreshes, agents reference the planning document to restore context. It's external memory that survives token limits.
 
-Cursor calls this "Scratchpad." Other tools use plan files, progress files, or markdown docs. The pattern is the same: external memory that outlasts any single context window.
+Cursor implements this as "Scratchpad." Other tools use plan files, progress files, or markdown todos. The pattern is the same: a persistent document that outlasts any single context window.
 
 ## Tools
 
 Several tools implement orchestration patterns:
 
+- **[Cursor](https://cursor.com)**: Uses planner-worker-judge hierarchy for long-running agents. Implements persistent planning via "Scratchpad."
 - **[Gas Town](https://github.com/steveyegge/gastown)**: Multi-agent workspace manager for Claude Code. Coordinates 20-30+ agents with planner-worker hierarchy and git-backed persistence.
 - **[Beads](https://github.com/steveyegge/beads)**: Git-native issue tracker designed for AI agents. Provides dependency-aware task graphs that survive session restarts.
 - **Claude Code**: Built-in background tasks (Ctrl+B), message queueing, and subagent spawning via the Task tool.
