@@ -49,3 +49,12 @@ They don't protect you from an agent that goes off the rails. They just keep its
 ## The Pattern
 
 Use worktrees when you need to work on multiple things at once. Understand that they share resources. For true isolation, you need VMs or containers. For parallel agentic work on the same codebase, worktrees hit the sweet spot.
+
+## Tooling
+
+Git worktree commands are verbose. Several people are building CLI tools to streamline the workflow:
+
+- **[worktree-cli](https://github.com/johnlindquist/worktree-cli)** by John Lindquist - Interactive TUI with fuzzy search, PR integration (creates worktrees from GitHub PRs), Cursor launching, stash-aware handling
+- **[bearing.dev](https://bearing.dev)** - Tracks which branches are checked out where, helps manage worktree sprawl when you end up with dozens of them
+
+These solve similar problems in different ways. You might also just build your own scripts. The tooling is still early and evolving.
