@@ -90,9 +90,9 @@ Orchestration helps when:
 
 ## Hierarchical Orchestration
 
-Flat structures hit limits. When multiple agents have equal authority, they become risk-averse—avoiding hard problems, making small safe changes, churning without progress.
+Flat structures hit limits. Multiple agents working in parallel tend to step on each other's work—editing the same files, duplicating effort, or making conflicting changes. And you lose track of what's happening when you're switching between fifteen different tabs.
 
-The fix: hierarchy. Separate agents into roles.
+Hierarchy helps. Separate agents into roles.
 
 **Planner-Worker Architecture:**
 - **Planners** explore the codebase and create tasks. They can spawn sub-planners for specific areas, making planning recursive.
