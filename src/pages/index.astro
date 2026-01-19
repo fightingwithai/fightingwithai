@@ -16,6 +16,22 @@ const { prev, next } = await getNavNeighbors('_home', 'index');
       max-width: 600px;
     }
 
+    .home-intro h2 {
+      margin-top: var(--space-8);
+      margin-bottom: var(--space-4);
+      font-size: var(--text-xl);
+    }
+
+    .home-intro .questions {
+      color: var(--color-text-muted);
+      line-height: var(--leading-relaxed);
+      padding-left: var(--space-6);
+      max-width: 600px;
+    }
+
+    .home-intro .questions li {
+      margin-bottom: var(--space-2);
+    }
   </style>
 
   <div class="home-intro">
@@ -27,6 +43,18 @@ const { prev, next } = await getNavNeighbors('_home', 'index');
     <p class="lead">It's a pattern catalog for working with AI without surrendering control. Every tool calls these concepts something different — prompts, commands, skills, rules. The patterns underneath are the same.</p>
 
     <p class="lead">This guide does not argue that AI "doesn't work," nor that it should be avoided. It documents where it works, where it breaks, and what to do about it.</p>
+
+    <h2>If you're wondering...</h2>
+    <ul class="questions">
+      <li>Why does Copilot keep suggesting the wrong thing?</li>
+      <li>How do I get better results from Claude Code or Cursor?</li>
+      <li>What's the difference between prompting and context engineering?</li>
+      <li>Why does AI output get worse in longer conversations?</li>
+      <li>How do I review AI-generated code without missing bugs?</li>
+      <li>When should I trust AI suggestions vs write code myself?</li>
+    </ul>
+
+    <p class="lead">...this guide has patterns for that.</p>
 
 <ContentNav prev={prev} next={next} currentCollection="_home" position="bottom" />
   </div>
