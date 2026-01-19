@@ -26,7 +26,7 @@ Claude Code can create and switch between files, run shell commands, and iterate
 
 Claude Code supports [agent orchestration](/concepts/agent-orchestration) patterns out of the box:
 
-- **Background tasks**: Press Ctrl+V to move the current operation to the background while you continue working
+- **Background tasks**: Press Ctrl+B to move the current operation to the background while you continue working
 - **Message queueing**: Send follow-up messages without waiting for the current loop to complete
 - **Multiple sessions**: Run concurrent sessions in separate terminals or worktrees, each with isolated context
 
