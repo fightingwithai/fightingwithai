@@ -22,7 +22,7 @@ Terminal fluency isn't just about running agents in the terminal. It's about und
 
 Graphical tools often require clicking on files to review changes. People skip it because it's too much friction. They don't review the diffs. They don't catch problems.
 
-[Claude Code](/coding-assistants/claude-code) scrolls diffs directly in the chat as it edits. You see changes without clicking. Terminal tools like `lazygit` let you review AI-generated code across [worktrees](/workflow-guardrails/worktrees) with single keystrokes—no brittle git commands, no mouse.
+[Claude Code](/coding-assistants/claude-code) shows diffs inline as it edits—now with a dedicated panel for reviewing changes before accepting. Terminal tools like `lazygit` complement this by letting you review commits across [worktrees](/workflow-guardrails/worktrees) with single keystrokes.
 
 ## Resource Overhead
 

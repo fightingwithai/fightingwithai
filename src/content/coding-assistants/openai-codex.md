@@ -2,17 +2,13 @@
 title: OpenAI Codex
 ---
 
-OpenAI Codex is OpenAI's coding agent, designed for autonomous code generation and modification.
+OpenAI Codex is OpenAI's coding agent, designed for autonomous code generation and modification. It runs tasks in a sandboxed cloud environment.
 
 ## Known Issues
 
-Some users have experienced reliability problems:
+Some users have reported:
 
-- **Spiraling:** The model can get stuck in loops, repeatedly trying the same failing approach without recovering.
-- **Environment issues:** Running the wrong Node.js version even when given explicit commands specifying the correct version. Other coding agents running in the same environment work fine, suggesting the issue is with how Codex interprets or executes instructions.
+- **Environment handling:** Occasional issues with tool versions and environment setup
+- **Loop recovery:** Can get stuck retrying failed approaches
 
-## Context
-
-These observations come from specific usage and may not reflect everyone's experience. OpenAI continues to iterate on their coding tools, and behavior may improve in future versions.
-
-As with any AI tool, it's worth testing in your specific environment before committing to it for serious work.
+Like [other AI coding tools](/coding-assistants/claude-code), the tooling is still maturing.
