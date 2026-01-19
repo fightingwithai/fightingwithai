@@ -88,6 +88,44 @@ Orchestration helps when:
 - Multiple independent pieces can parallelize
 - You need to resume across sessions
 
+## Hierarchical Orchestration
+
+Flat structures hit limits. When multiple agents have equal authority, they become risk-averse—avoiding hard problems, making small safe changes, churning without progress.
+
+The fix: hierarchy. Separate agents into roles.
+
+**Planner-Worker Architecture:**
+- **Planners** explore the codebase and create tasks. They can spawn sub-planners for specific areas, making planning recursive.
+- **Workers** focus entirely on completing assigned tasks. No coordination with other workers—just grind until done.
+- **Judges** evaluate results after each cycle and decide whether to continue or restart fresh.
+
+This mirrors traditional org design. The planner thinks, the workers execute, the judge evaluates. Each role has one job.
+
+Cursor uses this architecture for long-running agents. The planner maintains context about the full codebase; workers operate with narrow focus.
+
+## Scratchpad Pattern
+
+Context windows truncate. Instructions get lost. The agent "forgets" what the planner said three iterations ago.
+
+The scratchpad solves this: a shared document that persists outside the context window.
+
+- Planners write instructions, findings, and decisions
+- Workers read current state before acting
+- Results, bugs, and progress get logged back
+- Context resets don't lose institutional knowledge
+
+Even when the conversation refreshes, agents reference the scratchpad to restore context. It's a persistent notebook that survives token limits.
+
+Cursor calls this "Scratchpad." Other tools use plan files, progress files, or markdown docs. The pattern is the same: external memory that outlasts any single context window.
+
+## Tools
+
+Several tools implement orchestration patterns:
+
+- **[Gas Town](https://github.com/steveyegge/gastown)**: Multi-agent workspace manager for Claude Code. Coordinates 20-30+ agents with planner-worker hierarchy and git-backed persistence.
+- **[Beads](https://github.com/steveyegge/beads)**: Git-native issue tracker designed for AI agents. Provides dependency-aware task graphs that survive session restarts.
+- **Claude Code**: Built-in background tasks (Ctrl+B), message queueing, and subagent spawning via the Task tool.
+
 ## Trade-offs
 
 Orchestration adds complexity. Each handoff loses some nuance. Subagents may duplicate work if the plan isn't clear.
