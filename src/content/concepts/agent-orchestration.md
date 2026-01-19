@@ -105,18 +105,13 @@ Cursor uses this architecture for long-running agents. The planner maintains con
 
 ## Persistent Planning Documents
 
-Context windows truncate. Instructions get lost. The agent "forgets" what the planner said three iterations ago.
+Context windows truncate. Instructions from earlier in the session get pushed out.
 
-A shared planning document solves this: a file that persists outside the context window.
+One workaround: a shared file where agents store state and summaries. When the next agent picks up, it reads the file to get context about what happened.
 
-- Planners write instructions, findings, and decisions
-- Workers read current state before acting
-- Results, bugs, and progress get logged back
-- Context resets don't lose institutional knowledge
+This helps but doesn't eliminate information loss. Summaries lose detail. The file can get stale. Agents may not read it carefully or may misinterpret what's there.
 
-Even when the conversation refreshes, agents reference the planning document to restore context. It's external memory that survives token limits.
-
-Cursor implements this as "Scratchpad." Other tools use plan files, progress files, or markdown todos. The pattern is the same: a persistent document that outlasts any single context window.
+Cursor implements this as "Scratchpad." Other tools use plan files, progress files, or markdown todos.
 
 ## Tools
 
